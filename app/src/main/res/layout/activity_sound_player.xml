@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:text="Author - Soundname"
+    android:id="@+id/tvMusicHeader"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="50dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginLeft="20dp"
+    android:gravity="center_horizontal" />
+
+<SeekBar
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/sbMusic"
+    android:layout_above="@+id/linearLayout"
+    android:layout_centerHorizontal="true"
+    android:layout_marginRight="30dp"
+    android:layout_marginLeft="30dp"
+    android:max="100"
+    android:progress="0"
+    android:indeterminate="false" />
+
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="30dp"
+    android:layout_marginRight="30dp"
+    android:layout_marginLeft="30dp"
+    android:layout_marginTop="40dp"
+    android:id="@+id/linearLayout">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnReplay"
+            android:src="@drawable/ic_action_replay"
+            android:layout_weight="1"
+            android:layout_margin="1dp"
+            android:theme="@style/AppTheme" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnPlay"
+            android:src="@drawable/ic_action_play"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/tvMusicHeader"
+            android:layout_toStartOf="@+id/tvMusicHeader"
+            android:layout_weight="1"
+            android:layout_margin="1dp" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnPause"
+            android:src="@drawable/ic_action_pause"
+            android:layout_weight="1"
+            android:layout_margin="1dp" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnStop"
+            android:src="@drawable/ic_action_stop"
+            android:layout_weight="1"
+            android:layout_margin="1dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnSongPrev"
+            android:src="@drawable/ic_action_previous"
+            android:layout_weight="1"
+            android:layout_margin="1dp" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnRewind"
+            android:src="@drawable/ic_action_rewind"
+            android:layout_weight="1"
+            android:layout_margin="1dp" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnForward"
+            android:src="@drawable/ic_action_fast_forward"
+            android:layout_weight="1"
+            android:layout_margin="1dp" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnSongNext"
+            android:src="@drawable/ic_action_next"
+            android:layout_weight="1"
+            android:layout_margin="1dp" />
+    </LinearLayout>
+
+</LinearLayout>
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:text="00:00"
+    android:id="@+id/tvTimer"
+    android:layout_above="@+id/sbMusic"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="30dp"
+    android:textSize="40dp" />
+
+</RelativeLayout>

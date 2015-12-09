@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">SmartMediaGallery</string>
+    <string name="photo_removing_message">Do you really want to remove this photoItem?</string>
+    <string name="photo_removing_cancel_button">Cancel</string>
+    <string name="photo_removing_remove_button">Remove</string>
+    <string name="toast_photo_removed_message">The photoItem was removed</string>
+    <string name="media_removing_message">Do you really want to remove this item?</string>
+    <string name="media_removing_cancel_button">Cancel</string>
+    <string name="media_removing_remove_button">Remove</string>
+    <string name="toast_media_removed_message">The item was removed</string>
+    <string name="menu_item_photo_title">Photo</string>
+    <string name="menu_item_music_title">Music</string>
+    <string name="menu_item_video_title">Video</string>
+</resources>
