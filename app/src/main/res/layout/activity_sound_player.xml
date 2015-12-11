@@ -49,8 +49,8 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btnReplay"
-            android:src="@drawable/ic_action_replay"
+            android:id="@+id/btnSend"
+            android:src="@mipmap/ic_send"
             android:layout_weight="1"
             android:layout_margin="1dp"
             android:theme="@style/AppTheme" />
@@ -69,18 +69,17 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btnPause"
-            android:src="@drawable/ic_action_pause"
+            android:id="@+id/btnStop"
+            android:src="@drawable/ic_action_stop"
             android:layout_weight="1"
             android:layout_margin="1dp" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btnStop"
-            android:src="@drawable/ic_action_stop"
+            android:id="@+id/btnDownload"
             android:layout_weight="1"
-            android:layout_margin="1dp" />
+            android:src="@drawable/ic_action_download" />
 
     </LinearLayout>
 

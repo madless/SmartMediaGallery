@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.student.smartmediagallery">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -20,6 +21,13 @@
         <activity android:name=".ui.activity.list.VideoListActivity"></activity>
         <activity android:name=".ui.activity.pager.PhotoPagerActivity"></activity>
         <activity android:name=".ui.activity.player.SoundPlayerActivity"></activity>
+        <activity android:name=".ui.activity.player.RefactoredSoundPlayerActivity"></activity>
+        <provider
+            android:authorities="com.example.student.smartmediagallery.internal_file_provider"
+            android:name=".provider.InternalFileProvider"
+            android:enabled="true"
+            android:grantUriPermissions="true">
+        </provider>
     </application>
 
 </manifest>

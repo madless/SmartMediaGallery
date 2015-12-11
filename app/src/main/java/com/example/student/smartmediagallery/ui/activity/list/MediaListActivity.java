@@ -1,14 +1,15 @@
 package com.example.student.smartmediagallery.ui.activity.list;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.student.smartmediagallery.R;
 import com.example.student.smartmediagallery.adapter.MediaListAdapter;
+import com.example.student.smartmediagallery.constants.Constants;
 import com.example.student.smartmediagallery.listener.OnMediaItemClickListener;
 import com.example.student.smartmediagallery.listener.RecyclerItemClickListener;
 import com.example.student.smartmediagallery.model.MediaItem;
@@ -89,24 +91,54 @@ public abstract class MediaListActivity extends AppCompatActivity implements OnM
 
     @Override
     public void onMediaItemLongClick(View view, int position) {
+
         final int pos = position;
-        AlertDialog.Builder ad = new AlertDialog.Builder(MediaListActivity.this);
-        ad.setMessage(R.string.media_removing_message);
-        ad.setPositiveButton(R.string.media_removing_remove_button, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mediaItems.remove(pos);
-                //recyclerView.removeViewAt(pos);
-                mediaListAdapter.notifyItemRemoved(pos);
-                //mediaListAdapter.notifyItemRangeChanged(pos, mediaItems.size());
-                //mediaListAdapter.notifyDataSetChanged();
-                Toast.makeText(MediaListActivity.this, R.string.toast_media_removed_message, Toast.LENGTH_SHORT).show();
-            }
-        });
-        ad.setNegativeButton(R.string.media_removing_cancel_button, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {}
-        });
-        ad.show();
+        RemoveMediaDialogFragment removeMediaDialogFragment = new RemoveMediaDialogFragment();
+        Bundle arg = new Bundle();
+        arg.putInt(Constants.CURRENT_MEDIA_POS.toString(), position);
+        removeMediaDialogFragment.setArguments(arg);
+        removeMediaDialogFragment.show(getSupportFragmentManager(), "tag");
+//        ad.setMessage(R.string.media_removing_message);
+//        ad.setPositiveButton(R.string.media_removing_remove_button, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                mediaItems.remove(pos);
+//                //recyclerView.removeViewAt(pos);
+//                mediaListAdapter.notifyItemRemoved(pos);
+//                //mediaListAdapter.notifyItemRangeChanged(pos, mediaItems.size());
+//                //mediaListAdapter.notifyDataSetChanged();
+//                Toast.makeText(MediaListActivity.this, R.string.toast_media_removed_message, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        ad.setNegativeButton(R.string.media_removing_cancel_button, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {}
+//        });
+        //ad.show();
+    }
+
+    public class RemoveMediaDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final int pos = getArguments().getInt(Constants.CURRENT_MEDIA_POS.toString());;
+            AlertDialog.Builder ad = new AlertDialog.Builder(MediaListActivity.this);
+            ad.setMessage(R.string.dialog_media_removing_message);
+            ad.setPositiveButton(R.string.dialog_media_removing_remove_button, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    mediaItems.remove(pos);
+                    //recyclerView.removeViewAt(pos);
+                    mediaListAdapter.notifyItemRemoved(pos);
+                    //mediaListAdapter.notifyItemRangeChanged(pos, mediaItems.size());
+                    //mediaListAdapter.notifyDataSetChanged();
+                    Toast.makeText(MediaListActivity.this, R.string.toast_media_removed_message, Toast.LENGTH_SHORT).show();
+                }
+            });
+            ad.setNegativeButton(R.string.dialog_cancel_button, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {}
+            });
+            return ad.create();
+        }
     }
 }
