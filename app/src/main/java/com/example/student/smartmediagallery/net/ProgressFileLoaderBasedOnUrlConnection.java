@@ -85,7 +85,6 @@ public class ProgressFileLoaderBasedOnUrlConnection extends ProgressFileLoader{
 
             if (sLength != null) {
                 totalSize = Long.parseLong(sLength);
-
                 if(progressListener != null) {
                     progressListener.onTotalSizeFetched(totalSize);
                 }

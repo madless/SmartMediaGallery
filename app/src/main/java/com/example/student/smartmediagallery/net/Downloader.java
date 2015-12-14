@@ -1,12 +1,11 @@
-package com.example.student.smartmediagallery;
+package com.example.student.smartmediagallery.net;
 
 import android.os.Message;
 import android.util.Log;
 
-import com.example.student.smartmediagallery.net.ProgressFileLoader;
-import com.example.student.smartmediagallery.net.ProgressFileLoaderBasedOnUrlConnection;
+import com.example.student.smartmediagallery.model.Downloadable;
+import com.example.student.smartmediagallery.ui.handler.DownloadingHandler;
 
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -17,6 +16,7 @@ public class Downloader implements Runnable, ProgressFileLoader.LoaderListener{
     DownloadingHandler downloadingHandler;
     ProgressFileLoaderBasedOnUrlConnection loader;
     boolean isCanceled;
+    boolean isPaused;
 
     public Downloader(Downloadable downloadable, DownloadingHandler downloadingHandler) {
         this.downloadable = downloadable;
@@ -25,12 +25,16 @@ public class Downloader implements Runnable, ProgressFileLoader.LoaderListener{
 
     @Override
     public void run() {
+        isCanceled = false;
         Message message = downloadingHandler.obtainMessage(DownloadingHandler.MESSAGE_INIT, downloadable);
         downloadingHandler.sendMessage(message);
         String url = downloadable.getUrl();
         String targetPathStr = downloadable.getTargetPath().getAbsolutePath();
         long bytesRead = downloadable.getBytesRead();
-        Log.d("mylog", "bytes read: " + bytesRead);
+        if(!isPaused) {
+            downloadable.getTargetPath().delete();
+        }
+        isPaused = false;
         loader = new ProgressFileLoaderBasedOnUrlConnection(url, targetPathStr, bytesRead);
         loader.setProgressListener(this);
         try {
@@ -68,16 +72,15 @@ public class Downloader implements Runnable, ProgressFileLoader.LoaderListener{
     }
 
     public void pause() {
-        Log.d("mylog", "PAUSE");
         if(loader != null) {
             loader.cancel();
         }
+        isPaused = true;
         Message message = downloadingHandler.obtainMessage(DownloadingHandler.MESSAGE_PAUSED, downloadable);
         downloadingHandler.sendMessage(message);
     }
 
     public void stop() {
-        Log.d("mylog", "STOP");
         if(loader != null) {
             loader.cancel();
         }

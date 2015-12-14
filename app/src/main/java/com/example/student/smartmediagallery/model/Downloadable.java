@@ -1,4 +1,4 @@
-package com.example.student.smartmediagallery;
+package com.example.student.smartmediagallery.model;
 
 import java.io.File;
 

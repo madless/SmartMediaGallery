@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.student.smartmediagallery.R;
@@ -56,6 +57,7 @@ public abstract class MediaListActivity extends AppCompatActivity implements OnM
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(itemAnimator);
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, this));
+
     }
 
     @Override
@@ -91,30 +93,11 @@ public abstract class MediaListActivity extends AppCompatActivity implements OnM
 
     @Override
     public void onMediaItemLongClick(View view, int position) {
-
-        final int pos = position;
         RemoveMediaDialogFragment removeMediaDialogFragment = new RemoveMediaDialogFragment();
         Bundle arg = new Bundle();
         arg.putInt(Constants.CURRENT_MEDIA_POS.toString(), position);
         removeMediaDialogFragment.setArguments(arg);
         removeMediaDialogFragment.show(getSupportFragmentManager(), "tag");
-//        ad.setMessage(R.string.media_removing_message);
-//        ad.setPositiveButton(R.string.media_removing_remove_button, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                mediaItems.remove(pos);
-//                //recyclerView.removeViewAt(pos);
-//                mediaListAdapter.notifyItemRemoved(pos);
-//                //mediaListAdapter.notifyItemRangeChanged(pos, mediaItems.size());
-//                //mediaListAdapter.notifyDataSetChanged();
-//                Toast.makeText(MediaListActivity.this, R.string.toast_media_removed_message, Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        ad.setNegativeButton(R.string.media_removing_cancel_button, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {}
-//        });
-        //ad.show();
     }
 
     public class RemoveMediaDialogFragment extends DialogFragment {

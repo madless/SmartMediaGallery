@@ -8,8 +8,6 @@ import android.view.View;
 import com.example.student.smartmediagallery.adapter.MediaListAdapter;
 import com.example.student.smartmediagallery.constants.Constants;
 import com.example.student.smartmediagallery.parser.SoundContentXmlParser;
-import com.example.student.smartmediagallery.ui.activity.pager.PhotoPagerActivity;
-import com.example.student.smartmediagallery.ui.activity.player.RefactoredSoundPlayerActivity;
 import com.example.student.smartmediagallery.ui.activity.player.SoundPlayerActivity;
 
 import java.io.IOException;
@@ -38,7 +36,7 @@ public class SoundListActivity extends MediaListActivity {
 
     @Override
     public void onMediaItemClick(View view, int position) {
-        Intent soundPlayerIntent = new Intent(this, RefactoredSoundPlayerActivity.class);
+        Intent soundPlayerIntent = new Intent(this, SoundPlayerActivity.class);
         soundPlayerIntent.putExtra(Constants.CURRENT_MEDIA_POS.toString(), position);
         ArrayList<? extends Parcelable> parcelableSounds = new ArrayList<>((ArrayList<? extends Parcelable>) mediaItems);
         soundPlayerIntent.putParcelableArrayListExtra(Constants.MEDIA_LIST.toString(), parcelableSounds);

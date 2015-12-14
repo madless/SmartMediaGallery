@@ -4,7 +4,6 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
-import android.database.MatrixCursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.support.annotation.Nullable;
@@ -13,22 +12,23 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 public class InternalFileProvider extends ContentProvider {
-    public static final String AUTHORITY = "com.example.student.smartmediagallery.internal_file_provider";
     private UriMatcher uriMatcher;
+    private ResourceManager resourceManager;
 
     @Override
     public boolean onCreate() {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(AUTHORITY, "audio/*", 1);
+        uriMatcher.addURI(ProviderContract.AUTHORITY, ProviderContract.SOUND_DIR + ProviderContract.ALL_IN_DIR, 1);
         return true;
     }
 
     @Nullable
     @Override
     public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
+        resourceManager = new ResourceManager(getContext());
         switch (uriMatcher.match(uri)) {
             case 1:
-                String fileLocation = getContext().getFilesDir() + File.separator + uri.getLastPathSegment();
+                String fileLocation = resourceManager.getSoundItemPathByUri(uri);
                 ParcelFileDescriptor sound = ParcelFileDescriptor.open(new File(fileLocation), ParcelFileDescriptor.MODE_READ_ONLY);
                 return sound;
             default:
@@ -39,13 +39,7 @@ public class InternalFileProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        MatrixCursor c = null;
-        String fileLocation = getContext().getFilesDir() + File.separator + uri.getLastPathSegment();
-        File file = new File(fileLocation);
-        long time = System.currentTimeMillis();
-        c = new MatrixCursor(new String[] { "_id", "_data", "orientation", "mime_type", "datetaken", "_display_name" });
-        c.addRow(new Object[] { 0,  file, 0, "audio/mp3", time, uri.getLastPathSegment() });
-        return c;
+        return null;
     }
 
     @Nullable

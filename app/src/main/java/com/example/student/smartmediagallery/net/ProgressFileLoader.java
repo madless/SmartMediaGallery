@@ -7,7 +7,7 @@ import java.io.IOException;
  */
 public abstract class ProgressFileLoader {
 //    public static final int BUFFER_SIZE = 8192;
-public static final int BUFFER_SIZE = 50;
+    public static final int BUFFER_SIZE = 50;
     public static final int DEFAULT_TIMEOUT = 15000;
 
     protected String url;

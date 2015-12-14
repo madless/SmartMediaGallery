@@ -1,36 +1,29 @@
-package com.example.student.smartmediagallery;
+package com.example.student.smartmediagallery.ui.handler;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.os.Handler;
+import android.content.Context;
 import android.os.Message;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
-
-import java.lang.ref.WeakReference;
+import com.example.student.smartmediagallery.R;
+import com.example.student.smartmediagallery.model.Downloadable;
 
 /**
- * Created by student on 11.12.2015.
+ * Created by student on 14.12.2015.
  */
-public class DownloadingHandler extends Handler {
-    public static final int MESSAGE_IN_PROGRESS = 0;
-    public static final int MESSAGE_PAUSED = 1;
-    public static final int MESSAGE_STOPPED = 2;
-    public static final int MESSAGE_DOWNLOADED = 3;
-    public static final int MESSAGE_INIT = 4;
-
-    Activity activity;
+public class SoundDownloadingHandler extends DownloadingHandler {
     AlertDialog.Builder dialogBuilder;
     Dialog dialog;
     NumberProgressBar loadingProgressBar;
     TextView textViewLoadingProgress, textViewLoadingFileName;
 
-    public DownloadingHandler(Activity activity, AlertDialog.Builder dialogBuilder) {
-        this.activity = activity;
+    public SoundDownloadingHandler(Context context, AlertDialog.Builder dialogBuilder) {
+        super(context);
         this.dialogBuilder = dialogBuilder;
     }
 
@@ -40,7 +33,7 @@ public class DownloadingHandler extends Handler {
         Downloadable downloadable = (Downloadable) msg.obj;
         switch (msg.what) {
             case MESSAGE_INIT: {
-                View dialogContentView = View.inflate(activity.getApplicationContext(), R.layout.dialog_loading_content, null);
+                View dialogContentView = View.inflate(context.getApplicationContext(), R.layout.dialog_loading_content, null);
                 dialogBuilder.setView(dialogContentView);
                 dialogBuilder.create();
                 dialog = dialogBuilder.show();
@@ -54,22 +47,22 @@ public class DownloadingHandler extends Handler {
                 break;
             }
             case MESSAGE_IN_PROGRESS: {
-                int percentDownloaded = (int)((downloadable.getBytesRead() * 100f) / downloadable.getTotalSize());
+                int percentDownloaded = (int)((downloadable.getBytesRead() * MAX_PROGRESS) / (float)downloadable.getTotalSize());
                 loadingProgressBar.setProgress(percentDownloaded);
                 textViewLoadingProgress.setText(downloadable.getBytesRead() + "/" + downloadable.getTotalSize() + " bytes");
                 break;
             }
             case MESSAGE_PAUSED: {
-                Toast.makeText(activity.getApplicationContext(), R.string.toast_file_paused, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context.getApplicationContext(), R.string.toast_file_paused, Toast.LENGTH_SHORT).show();
                 break;
             }
             case MESSAGE_DOWNLOADED: {
                 dialog.dismiss();
-                Toast.makeText(activity.getApplicationContext(), R.string.toast_file_downloaded, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context.getApplicationContext(), R.string.toast_file_downloaded, Toast.LENGTH_SHORT).show();
                 break;
             }
             case MESSAGE_STOPPED: {
-                Toast.makeText(activity.getApplicationContext(), R.string.toast_file_stopped, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context.getApplicationContext(), R.string.toast_file_stopped, Toast.LENGTH_SHORT).show();
                 break;
             }
         }
