@@ -1,12 +1,8 @@
 package com.example.student.smartmediagallery.ui.handler;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 
-/**
- * Created by student on 11.12.2015.
- */
 public class DownloadingHandler extends Handler {
 
     public final static int MAX_PROGRESS = 100;

@@ -45,17 +45,14 @@ public class MediaListAdapter extends RecyclerView.Adapter<MediaListAdapter.View
         return mediaItems.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView text;
         public ImageView icon;
-        public ImageView removeIcon;
 
         public ViewHolder(View itemView) {
             super(itemView);
             text = (TextView) itemView.findViewById(R.id.tv_item_text);
             icon = (ImageView) itemView.findViewById(R.id.iv_item_icon);
-            //removeIcon = (ImageView) itemView.findViewById(R.id.iv_remove_icon);
-            //removeIcon.setOnClickListener(this);
         }
 
         public TextView getText() {
@@ -66,17 +63,5 @@ public class MediaListAdapter extends RecyclerView.Adapter<MediaListAdapter.View
             return icon;
         }
 
-        @Override
-        public void onClick(View v) {
-            if(v.equals(removeIcon)){
-                removeAt(getAdapterPosition());
-            }
-        }
-
-        public void removeAt(int position) {
-            mediaItems.remove(position);
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, mediaItems.size());
-        }
     }
 }

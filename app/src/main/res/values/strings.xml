@@ -20,4 +20,6 @@
     <string name="toast_file_downloaded">File downloaded successfully</string>
     <string name="toast_file_paused">Downloading paused</string>
     <string name="toast_file_stopped">Downloading stopped</string>
+    <string name="downloadable_menu_item_download_title">Download</string>
+    <string name="dialog_loading_ok_button">Ok</string>
 </resources>

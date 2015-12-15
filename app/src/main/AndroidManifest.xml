@@ -21,13 +21,20 @@
         <activity android:name=".ui.activity.list.VideoListActivity"></activity>
         <activity android:name=".ui.activity.pager.PhotoPagerActivity"></activity>
         <activity android:name=".ui.activity.player.SoundPlayerActivity"></activity>
+        <activity android:name=".ui.activity.player.VideoPlayerActivity"></activity>
+
         <provider
             android:authorities="com.example.student.smartmediagallery.internal_file_provider"
             android:name=".provider.InternalFileProvider"
             android:enabled="true"
             android:grantUriPermissions="true">
         </provider>
+
         <service android:name=".service.DownloadingService"></service>
+        <service android:name=".service.NewDownloaderService"></service>
+
+        <!--<receiver android:name=".net.DownloadManager$DownloadingReceiver" ></receiver>-->
+        <!--<receiver android:name=".service.NewDownloaderService$DownloaderServiceReceiver"></receiver>-->
     </application>
 
 </manifest>

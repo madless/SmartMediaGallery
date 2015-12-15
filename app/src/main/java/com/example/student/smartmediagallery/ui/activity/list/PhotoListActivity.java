@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import android.view.View;
 
 import com.example.student.smartmediagallery.adapter.MediaListAdapter;
-import com.example.student.smartmediagallery.constants.Constants;
+import com.example.student.smartmediagallery.constants.TransferConstant;
 import com.example.student.smartmediagallery.parser.PhotoContentXmlParser;
 import com.example.student.smartmediagallery.ui.activity.pager.PhotoPagerActivity;
 
@@ -33,9 +33,9 @@ public class PhotoListActivity extends MediaListActivity {
     @Override
     public void onMediaItemClick(View view, int position) {
         Intent photoPagerIntent = new Intent(PhotoListActivity.this, PhotoPagerActivity.class);
-        photoPagerIntent.putExtra(Constants.CURRENT_MEDIA_POS.toString(), position);
+        photoPagerIntent.putExtra(TransferConstant.CURRENT_MEDIA_POS.toString(), position);
         ArrayList<? extends Parcelable> parcelablePhotos = new ArrayList<>((ArrayList<? extends Parcelable>) mediaItems);
-        photoPagerIntent.putParcelableArrayListExtra(Constants.MEDIA_LIST.toString(), parcelablePhotos);
+        photoPagerIntent.putParcelableArrayListExtra(TransferConstant.MEDIA_LIST.toString(), parcelablePhotos);
         startActivity(photoPagerIntent);
     }
 

@@ -7,7 +7,7 @@ import android.support.v4.view.ViewPager;
 import com.example.student.smartmediagallery.R;
 import com.example.student.smartmediagallery.adapter.PhotoPagerAdapter;
 import com.example.student.smartmediagallery.animation.AccordionTransformer;
-import com.example.student.smartmediagallery.constants.Constants;
+import com.example.student.smartmediagallery.constants.TransferConstant;
 import com.example.student.smartmediagallery.model.PhotoItem;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -35,9 +35,9 @@ public class PhotoPagerActivity extends FragmentActivity {
                 //.showImageOnLoading(R.mipmap.ic_loading).build();
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(this));
-        int pos = getIntent().getIntExtra(Constants.CURRENT_MEDIA_POS.toString(), 0);
+        int pos = getIntent().getIntExtra(TransferConstant.CURRENT_MEDIA_POS.toString(), 0);
 
-        photoItems = getIntent().getParcelableArrayListExtra(Constants.MEDIA_LIST.toString());
+        photoItems = getIntent().getParcelableArrayListExtra(TransferConstant.MEDIA_LIST.toString());
 
         viewPager = (ViewPager)findViewById(R.id.pager);
         PhotoPagerAdapter adapter = new PhotoPagerAdapter(getSupportFragmentManager(), photoItems, imageLoader, options);

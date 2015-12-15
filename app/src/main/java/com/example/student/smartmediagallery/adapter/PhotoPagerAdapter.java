@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 
-import com.example.student.smartmediagallery.constants.Constants;
+import com.example.student.smartmediagallery.constants.TransferConstant;
 import com.example.student.smartmediagallery.model.PhotoItem;
 import com.example.student.smartmediagallery.ui.fragment.PhotoPageFragment;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -31,9 +31,9 @@ public class PhotoPagerAdapter extends FragmentStatePagerAdapter {
         PhotoPageFragment fragment = new PhotoPageFragment();
         fragment.init(imageLoader, options);
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.CURRENT_MEDIA.toString(), photoItems.get(index));
-        bundle.putInt(Constants.CURRENT_MEDIA_POS.toString(), index);
-        bundle.putInt(Constants.MEDIA_LIST_LENGTH.toString(), photoItems.size());
+        bundle.putParcelable(TransferConstant.CURRENT_MEDIA.toString(), photoItems.get(index));
+        bundle.putInt(TransferConstant.CURRENT_MEDIA_POS.toString(), index);
+        bundle.putInt(TransferConstant.MEDIA_LIST_LENGTH.toString(), photoItems.size());
 
         fragment.setArguments(bundle);
 

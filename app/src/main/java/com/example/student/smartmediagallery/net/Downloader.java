@@ -8,9 +8,6 @@ import com.example.student.smartmediagallery.ui.handler.DownloadingHandler;
 
 import java.io.IOException;
 
-/**
- * Created by student on 11.12.2015.
- */
 public class Downloader implements Runnable, ProgressFileLoader.LoaderListener{
     Downloadable downloadable;
     DownloadingHandler downloadingHandler;

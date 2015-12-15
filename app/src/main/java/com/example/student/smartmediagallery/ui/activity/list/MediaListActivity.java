@@ -13,12 +13,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.student.smartmediagallery.R;
 import com.example.student.smartmediagallery.adapter.MediaListAdapter;
-import com.example.student.smartmediagallery.constants.Constants;
+import com.example.student.smartmediagallery.constants.TransferConstant;
 import com.example.student.smartmediagallery.listener.OnMediaItemClickListener;
 import com.example.student.smartmediagallery.listener.RecyclerItemClickListener;
 import com.example.student.smartmediagallery.model.MediaItem;
@@ -95,7 +94,7 @@ public abstract class MediaListActivity extends AppCompatActivity implements OnM
     public void onMediaItemLongClick(View view, int position) {
         RemoveMediaDialogFragment removeMediaDialogFragment = new RemoveMediaDialogFragment();
         Bundle arg = new Bundle();
-        arg.putInt(Constants.CURRENT_MEDIA_POS.toString(), position);
+        arg.putInt(TransferConstant.CURRENT_MEDIA_POS.toString(), position);
         removeMediaDialogFragment.setArguments(arg);
         removeMediaDialogFragment.show(getSupportFragmentManager(), "tag");
     }
@@ -103,7 +102,7 @@ public abstract class MediaListActivity extends AppCompatActivity implements OnM
     public class RemoveMediaDialogFragment extends DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            final int pos = getArguments().getInt(Constants.CURRENT_MEDIA_POS.toString());;
+            final int pos = getArguments().getInt(TransferConstant.CURRENT_MEDIA_POS.toString());;
             AlertDialog.Builder ad = new AlertDialog.Builder(MediaListActivity.this);
             ad.setMessage(R.string.dialog_media_removing_message);
             ad.setPositiveButton(R.string.dialog_media_removing_remove_button, new DialogInterface.OnClickListener() {

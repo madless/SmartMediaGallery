@@ -5,7 +5,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 
-public class ProgressFileLoaderBasedOnUrlConnection extends ProgressFileLoader{
+public class ProgressFileLoaderBasedOnUrlConnection extends ProgressFileLoader implements Serializable {
 
     public ProgressFileLoaderBasedOnUrlConnection(String url, String targetPath, long readBytes) {
         super(url, targetPath, readBytes);

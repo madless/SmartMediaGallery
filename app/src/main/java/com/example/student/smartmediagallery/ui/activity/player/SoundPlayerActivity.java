@@ -14,12 +14,12 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.example.student.smartmediagallery.constants.TransferConstant;
 import com.example.student.smartmediagallery.model.Downloadable;
 import com.example.student.smartmediagallery.net.Downloader;
 import com.example.student.smartmediagallery.provider.ResourceManager;
 import com.example.student.smartmediagallery.ui.handler.DownloadingHandler;
 import com.example.student.smartmediagallery.R;
-import com.example.student.smartmediagallery.constants.Constants;
 import com.example.student.smartmediagallery.model.SoundItem;
 import com.example.student.smartmediagallery.ui.handler.SoundDownloadingHandler;
 import com.example.student.smartmediagallery.provider.ProviderContract;
@@ -42,8 +42,8 @@ public class SoundPlayerActivity extends AppCompatActivity{
     private int soundPosition;
     private final Handler soundPlayerHandler = new Handler();
     private ArrayList<SoundItem> sounds;
-    private AlertDialog.Builder alertDialogBuilder;
     private Runnable updator;
+    private AlertDialog.Builder alertDialogBuilder;
     private Downloadable downloadable;
     private DownloadingHandler downloadingHandler;
     private ExecutorService executorService;
@@ -86,14 +86,13 @@ public class SoundPlayerActivity extends AppCompatActivity{
             }
         });
 
-        soundPosition = getIntent().getIntExtra(Constants.CURRENT_MEDIA_POS.toString(), 0);
-        sounds = getIntent().getParcelableArrayListExtra(Constants.MEDIA_LIST.toString());
+        soundPosition = getIntent().getIntExtra(TransferConstant.CURRENT_MEDIA_POS.toString(), 0);
+        sounds = getIntent().getParcelableArrayListExtra(TransferConstant.MEDIA_LIST.toString());
         soundUrl = sounds.get(soundPosition).getSoundUrl();
         title = sounds.get(soundPosition).getTitle();
         tvMusicHeader.setText(title);
         sbMusic.setOnTouchListener(new SoundProgressBarOnTouchListener());
         mediaPlayer = new MediaPlayer();
-
     }
 
     @Override
@@ -169,7 +168,6 @@ public class SoundPlayerActivity extends AppCompatActivity{
                     break;
                 }
                 case R.id.btnDownload: {
-
                     executorService.execute(downloader);
                     break;
                 }

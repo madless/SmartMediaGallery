@@ -10,12 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.student.smartmediagallery.R;
-import com.example.student.smartmediagallery.constants.Constants;
+import com.example.student.smartmediagallery.constants.TransferConstant;
 import com.example.student.smartmediagallery.model.PhotoItem;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-
-import org.w3c.dom.Text;
 
 /**
  * Created by student on 08.12.2015.
@@ -42,9 +40,9 @@ public class PhotoPageFragment extends Fragment {
         TextView tvPostionInfo = (TextView) view.findViewById(R.id.tv_position_info);
         TextView tvPhotoTitle = (TextView) view.findViewById(R.id.tv_photo_title);
 
-        PhotoItem photoItem = getArguments().getParcelable(Constants.CURRENT_MEDIA.toString());
-        int position = getArguments().getInt(Constants.CURRENT_MEDIA_POS.toString());
-        int length = getArguments().getInt(Constants.MEDIA_LIST_LENGTH.toString());
+        PhotoItem photoItem = getArguments().getParcelable(TransferConstant.CURRENT_MEDIA.toString());
+        int position = getArguments().getInt(TransferConstant.CURRENT_MEDIA_POS.toString());
+        int length = getArguments().getInt(TransferConstant.MEDIA_LIST_LENGTH.toString());
 
         imageLoader.displayImage(photoItem.getPhotoUrl(), iv, options);
         tvPostionInfo.setText("" + (position + 1) + "/" + length);
