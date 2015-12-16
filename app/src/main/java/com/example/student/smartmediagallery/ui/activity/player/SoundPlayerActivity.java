@@ -21,7 +21,7 @@ import com.example.student.smartmediagallery.provider.ResourceManager;
 import com.example.student.smartmediagallery.ui.handler.DownloadingHandler;
 import com.example.student.smartmediagallery.R;
 import com.example.student.smartmediagallery.model.SoundItem;
-import com.example.student.smartmediagallery.ui.handler.SoundDownloadingHandler;
+import com.example.student.smartmediagallery.ui.handler.MediaDownloadingHandler;
 import com.example.student.smartmediagallery.provider.ProviderContract;
 
 import java.io.File;
@@ -104,7 +104,7 @@ public class SoundPlayerActivity extends AppCompatActivity{
         String url = sound.getSoundUrl();
         File targetPath = new File(resourceManager.getSoundItemPath(sound));
         downloadable = new Downloadable(title, url, targetPath);
-        downloadingHandler = new SoundDownloadingHandler(this, alertDialogBuilder);
+        downloadingHandler = new MediaDownloadingHandler(this, alertDialogBuilder);
         executorService = Executors.newFixedThreadPool(1);
         downloader = new Downloader(downloadable, downloadingHandler);
     }

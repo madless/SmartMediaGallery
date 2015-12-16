@@ -1,10 +1,10 @@
 package com.example.student.smartmediagallery.ui.handler;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,16 +13,13 @@ import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.example.student.smartmediagallery.R;
 import com.example.student.smartmediagallery.model.Downloadable;
 
-/**
- * Created by student on 14.12.2015.
- */
-public class SoundDownloadingHandler extends DownloadingHandler {
+public class MediaDownloadingHandler extends DownloadingHandler {
     AlertDialog.Builder dialogBuilder;
     Dialog dialog;
     NumberProgressBar loadingProgressBar;
     TextView textViewLoadingProgress, textViewLoadingFileName;
 
-    public SoundDownloadingHandler(Context context, AlertDialog.Builder dialogBuilder) {
+    public MediaDownloadingHandler(Context context, AlertDialog.Builder dialogBuilder) {
         super(context);
         this.dialogBuilder = dialogBuilder;
     }
@@ -37,6 +34,7 @@ public class SoundDownloadingHandler extends DownloadingHandler {
                 dialogBuilder.setView(dialogContentView);
                 dialogBuilder.create();
                 dialog = dialogBuilder.show();
+                Log.d("mylog", "dialog show!");
 
                 loadingProgressBar = (NumberProgressBar) dialogContentView.findViewById(R.id.pb_loading);
                 textViewLoadingProgress = (TextView) dialogContentView.findViewById(R.id.tv_loading_progress);
@@ -47,6 +45,7 @@ public class SoundDownloadingHandler extends DownloadingHandler {
                 break;
             }
             case MESSAGE_IN_PROGRESS: {
+                Log.d("myupd", "handleMessage - MESSAGE_IN_PROGRESS");
                 int percentDownloaded = (int)((downloadable.getBytesRead() * MAX_PROGRESS) / (float)downloadable.getTotalSize());
                 loadingProgressBar.setProgress(percentDownloaded);
                 textViewLoadingProgress.setText(downloadable.getBytesRead() + "/" + downloadable.getTotalSize() + " bytes");

@@ -8,7 +8,7 @@ import android.view.View;
 import com.example.student.smartmediagallery.adapter.MediaListAdapter;
 import com.example.student.smartmediagallery.constants.TransferConstant;
 import com.example.student.smartmediagallery.parser.VideoContentXmlParser;
-import com.example.student.smartmediagallery.ui.activity.player.VideoPlayerActivity;
+import com.example.student.smartmediagallery.ui.activity.player.RefactoredVideoPlayerActivity;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +32,7 @@ public class VideoListActivity extends MediaListActivity {
 
     @Override
     public void onMediaItemClick(View view, int position) {
-        Intent videoPlayerIntent = new Intent(this, VideoPlayerActivity.class);
+        Intent videoPlayerIntent = new Intent(this, RefactoredVideoPlayerActivity.class);
         videoPlayerIntent.putExtra(TransferConstant.CURRENT_MEDIA_POS.toString(), position);
         ArrayList<? extends Parcelable> parcelableVideos = new ArrayList<>((ArrayList<? extends Parcelable>) mediaItems);
         videoPlayerIntent.putParcelableArrayListExtra(TransferConstant.MEDIA_LIST.toString(), parcelableVideos);

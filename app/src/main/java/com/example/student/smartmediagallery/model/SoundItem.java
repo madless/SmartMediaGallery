@@ -4,7 +4,7 @@ import android.os.Parcel;
 
 import com.example.student.smartmediagallery.R;
 
-public class SoundItem extends MediaItem {
+public class SoundItem implements MediaItem {
 
 
     private String title;

@@ -5,7 +5,7 @@ import android.os.Parcel;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PhotoItem extends MediaItem {
+public class PhotoItem implements MediaItem {
     private String iconUrl;
     private String photoUrl;
 

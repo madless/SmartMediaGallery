@@ -12,13 +12,6 @@ public class Downloadable {
     private long totalSize;
     private long bytesRead;
 
-    public Downloadable(String title, String url, File targetPath, long bytesRead) {
-        this.title = title;
-        this.url = url;
-        this.targetPath = targetPath;
-        this.bytesRead = bytesRead;
-    }
-
     public Downloadable(String title, String url, File targetPath) {
         this.title = title;
         this.url = url;

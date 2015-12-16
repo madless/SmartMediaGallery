@@ -22,4 +22,6 @@
     <string name="toast_file_stopped">Downloading stopped</string>
     <string name="downloadable_menu_item_download_title">Download</string>
     <string name="dialog_loading_ok_button">Ok</string>
+
+    <string name="action_receiver_download_manager">gfl.madless.smart_media_galery.download_manager_receiver</string>
 </resources>

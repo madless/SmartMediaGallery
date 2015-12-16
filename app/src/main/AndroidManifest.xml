@@ -17,11 +17,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.list.SoundListActivity"></activity>
-        <activity android:name=".ui.activity.list.VideoListActivity"></activity>
-        <activity android:name=".ui.activity.pager.PhotoPagerActivity"></activity>
-        <activity android:name=".ui.activity.player.SoundPlayerActivity"></activity>
-        <activity android:name=".ui.activity.player.VideoPlayerActivity"></activity>
+        <activity android:name=".ui.activity.list.SoundListActivity"/>
+        <activity android:name=".ui.activity.list.VideoListActivity"/>
+        <activity android:name=".ui.activity.pager.PhotoPagerActivity"/>
+        <activity android:name=".ui.activity.player.SoundPlayerActivity"/>
+        <activity android:name=".ui.activity.player.VideoPlayerActivity"/>
 
         <provider
             android:authorities="com.example.student.smartmediagallery.internal_file_provider"
@@ -30,11 +30,24 @@
             android:grantUriPermissions="true">
         </provider>
 
-        <service android:name=".service.DownloadingService"></service>
-        <service android:name=".service.NewDownloaderService"></service>
+        <!--<service android:name=".service.DownloadingService"/>-->
+        <service android:name=".service.RefactoredDownloaderService"/>
+        <activity android:name=".ui.activity.player.RefactoredVideoPlayerActivity"></activity>
+        <receiver android:name=".ui.activity.player.RefactoredVideoPlayerActivity$DownloadManagerReceiver"></receiver>
 
-        <!--<receiver android:name=".net.DownloadManager$DownloadingReceiver" ></receiver>-->
-        <!--<receiver android:name=".service.NewDownloaderService$DownloaderServiceReceiver"></receiver>-->
+        <!--<receiver-->
+            <!--android:name=".net.DownloadManager$DownloadManagerReceiver">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="@string/action_receiver_download_manager"/>-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+
+        <!--<receiver android:name=".service.DownloaderService$DownloaderServiceReceiver">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="@string/action_receiver_downloader_service"/>-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+
     </application>
 
 </manifest>

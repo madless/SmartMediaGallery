@@ -2,7 +2,7 @@ package com.example.student.smartmediagallery.model;
 
 import android.os.Parcel;
 
-public class VideoItem extends MediaItem {
+public class VideoItem implements MediaItem {
     private String title;
     private String iconUrl;
     private String videoUrl;
