@@ -44,7 +44,7 @@ public class ProgressFileLoaderBasedOnUrlConnection extends ProgressFileLoader i
                     totalSize = Long.parseLong(sLength);
 
                     if(progressListener != null) {
-                        progressListener.onTotalSizeCalculated(totalSize);
+                        progressListener.onTotalSizeCalculated(url, totalSize);
                     }
                 }
             }
@@ -58,7 +58,7 @@ public class ProgressFileLoaderBasedOnUrlConnection extends ProgressFileLoader i
                 readBytes += length;
 
                 if(progressListener != null) {
-                    progressListener.onProgressUpdated(totalSize, readBytes);
+                    progressListener.onProgressUpdated(url, totalSize, readBytes);
                 }
 
                 if (cancelled) {
@@ -66,7 +66,7 @@ public class ProgressFileLoaderBasedOnUrlConnection extends ProgressFileLoader i
                 }
             }
 
-            progressListener.onDownloadComplete();
+            progressListener.onDownloadComplete(url);
         }
         finally {
             in.close();
@@ -86,7 +86,7 @@ public class ProgressFileLoaderBasedOnUrlConnection extends ProgressFileLoader i
             if (sLength != null) {
                 totalSize = Long.parseLong(sLength);
                 if(progressListener != null) {
-                    progressListener.onTotalSizeFetched(totalSize);
+                    progressListener.onTotalSizeFetched(url, totalSize);
                 }
             }
         }

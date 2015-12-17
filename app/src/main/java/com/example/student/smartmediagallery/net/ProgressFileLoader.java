@@ -7,7 +7,6 @@ import java.io.IOException;
  */
 public abstract class ProgressFileLoader {
     public static final int BUFFER_SIZE = 8192;
-    //public static final int BUFFER_SIZE = 50;
     public static final int DEFAULT_TIMEOUT = 15000;
 
     protected String url;
@@ -21,10 +20,10 @@ public abstract class ProgressFileLoader {
     protected boolean cancelled = false;
 
     public interface LoaderListener {
-        void onTotalSizeCalculated(long totalSize);
-        void onTotalSizeFetched(long totalSize);
-        void onProgressUpdated(long totalSize, long readSize);
-        void onDownloadComplete();
+        void onTotalSizeCalculated(String url, long totalSize);
+        void onTotalSizeFetched(String url, long totalSize);
+        void onProgressUpdated(String url, long totalSize, long readSize);
+        void onDownloadComplete(String url);
     }
 
     public ProgressFileLoader(String url, String targetPath, long readBytes) {

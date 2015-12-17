@@ -13,29 +13,29 @@ import android.util.Log;
 import com.example.student.smartmediagallery.R;
 import com.example.student.smartmediagallery.constants.MessageEvent;
 import com.example.student.smartmediagallery.constants.TransferConstant;
+import com.example.student.smartmediagallery.model.Downloadable;
+import com.example.student.smartmediagallery.model.Notificator;
 import com.example.student.smartmediagallery.net.ProgressFileLoader;
 import com.example.student.smartmediagallery.net.ProgressFileLoaderBasedOnUrlConnection;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
-public class RefactoredDownloaderService extends Service implements ProgressFileLoader.LoaderListener{
+public class DownloaderService extends Service implements ProgressFileLoader.LoaderListener{
 
     ProgressFileLoaderBasedOnUrlConnection loader;
     private NotificationManager notificationManager;
     NotificationCompat.Builder notificationBuilder;
-    String url;
-    String targetPathStr;
     boolean active;
     long totalSize;
     long readSize;
     boolean isPaused;
     DownloaderServiceBinder downloaderServiceBinder;
+    Downloadable downloadable;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d("mylog", "WOW CREATED!");
         downloaderServiceBinder = new DownloaderServiceBinder();
         notificationBuilder = new NotificationCompat.Builder(this);
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -43,12 +43,9 @@ public class RefactoredDownloaderService extends Service implements ProgressFile
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        url = intent.getStringExtra(TransferConstant.MEDIA_URL.toString());
-        targetPathStr = intent.getStringExtra(TransferConstant.TARGET_PATH.toString());
-
-        if(!active) {
-            Log.d("mylog", "new Loader created");
-            loader = new ProgressFileLoaderBasedOnUrlConnection(url, targetPathStr, readSize);
+        if(!active && intent != null) {
+            downloadable = intent.getParcelableExtra(TransferConstant.CURRENT_MEDIA.toString());
+            loader = new ProgressFileLoaderBasedOnUrlConnection(downloadable.getUrl(), downloadable.getTargetPath().getAbsolutePath(), readSize);
             loader.setProgressListener(this);
         } else {
             initDialog();
@@ -57,16 +54,10 @@ public class RefactoredDownloaderService extends Service implements ProgressFile
     }
 
     public void initDialog() {
-        Log.d("mylog", "initDialog()");
         Intent totalSizeFetchedIntent = new Intent(getString(R.string.action_receiver_download_manager));
         totalSizeFetchedIntent.putExtra(TransferConstant.MESSAGE_EVENT.toString(), MessageEvent.MESSAGE_INIT.toString());
         totalSizeFetchedIntent.putExtra(TransferConstant.TOTAL_SIZE.toString(), totalSize);
         sendBroadcast(totalSizeFetchedIntent);
-
-//        Intent progressUpdatedIntent = new Intent(getString(R.string.action_receiver_download_manager));
-//        progressUpdatedIntent.putExtra(TransferConstant.MESSAGE_EVENT.toString(), MessageEvent.MESSAGE_IN_PROGRESS.toString());
-//        progressUpdatedIntent.putExtra(TransferConstant.READ_SIZE.toString(), readSize);
-//        sendBroadcast(progressUpdatedIntent);
     }
 
     @Nullable
@@ -76,35 +67,33 @@ public class RefactoredDownloaderService extends Service implements ProgressFile
     }
 
     @Override
-    public void onTotalSizeCalculated(long totalSize) {}
+    public void onTotalSizeCalculated(String url, long totalSize) {}
     @Override
-    public void onTotalSizeFetched(long totalSize) {
+    public void onTotalSizeFetched(String url, long totalSize) {
         Intent totalSizeFetchedIntent = new Intent(getString(R.string.action_receiver_download_manager));
         totalSizeFetchedIntent.putExtra(TransferConstant.MESSAGE_EVENT.toString(), MessageEvent.MESSAGE_INIT.toString());
         totalSizeFetchedIntent.putExtra(TransferConstant.TOTAL_SIZE.toString(), totalSize);
         sendBroadcast(totalSizeFetchedIntent);
-        Log.d("mylog", "sent broadcast init: " + getString(R.string.action_receiver_download_manager));
         this.totalSize = totalSize;
-        notificationBuilder.setContentTitle(url).setSmallIcon(R.drawable.ic_action_download);
+        notificationBuilder.setContentTitle(downloadable.getTitle()).setSmallIcon(R.drawable.ic_action_download);
     }
     @Override
-    public void onProgressUpdated(long totalSize, long readSize) {
+    public void onProgressUpdated(String url, long totalSize, long readSize) {
         this.readSize = readSize;
         int percentDownloaded = (int)((readSize * 100) / this.totalSize);
         notificationBuilder.setProgress(100, percentDownloaded, false);
         notificationBuilder.setContentText("Downloading: " + readSize + "/" + this.totalSize);
-        notificationManager.notify(url.hashCode(), notificationBuilder.build());
+        notificationManager.notify(downloadable.getUrl().hashCode(), notificationBuilder.build());
         Intent progressUpdatedIntent = new Intent(getString(R.string.action_receiver_download_manager));
         progressUpdatedIntent.putExtra(TransferConstant.MESSAGE_EVENT.toString(), MessageEvent.MESSAGE_IN_PROGRESS.toString());
         progressUpdatedIntent.putExtra(TransferConstant.READ_SIZE.toString(), readSize);
         sendBroadcast(progressUpdatedIntent);
-        Log.d("myupd", "onProgressUpdated");
     }
     @Override
-    public void onDownloadComplete() {
+    public void onDownloadComplete(String url) {
         readSize = 0;
         notificationBuilder.setContentText("Downloaded").setProgress(0, 0, false);
-        notificationManager.notify(url.hashCode(), notificationBuilder.build());
+        notificationManager.notify(downloadable.getUrl().hashCode(), notificationBuilder.build());
         Intent downloadCompleteIntent = new Intent(getString(R.string.action_receiver_download_manager));
         downloadCompleteIntent.putExtra(TransferConstant.MESSAGE_EVENT.toString(), MessageEvent.MESSAGE_DOWNLOADED.toString());
         sendBroadcast(downloadCompleteIntent);
@@ -112,28 +101,25 @@ public class RefactoredDownloaderService extends Service implements ProgressFile
     }
 
     public class DownloaderServiceBinder extends Binder {
-        public RefactoredDownloaderService getService() {
-            return RefactoredDownloaderService.this;
+        public DownloaderService getService() {
+            return DownloaderService.this;
         }
     }
 
     public void startLoading() {
-        Log.d("mylog", "startLoading()");
         if(!active) {
             active = true;
-            Log.d("mylog", "downloading had started");
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         if(!isPaused) {
-                            new File(targetPathStr).delete();
+                            downloadable.getTargetPath().delete();
                         }
                         isPaused = false;
                         loader.requestContentLenght();
                         loader.download();
                     } catch (IOException | InterruptedException e) {
-                        Log.d("mylog", "ERROR!");
                         e.printStackTrace();
                     } finally {
                         active = false;
@@ -155,9 +141,9 @@ public class RefactoredDownloaderService extends Service implements ProgressFile
         loader.cancel();
         readSize = 0;
         active = false;
+        onProgressUpdated(downloadable.getUrl(), totalSize, readSize);
+        notificationManager.cancel(downloadable.getUrl().hashCode());
         stopSelf();
-        onProgressUpdated(totalSize, readSize);
-        notificationManager.cancel(url.hashCode());
     }
 
     public boolean isActive() {

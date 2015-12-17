@@ -4,11 +4,21 @@ import android.os.Parcel;
 
 import com.example.student.smartmediagallery.R;
 
-public class SoundItem implements MediaItem {
+import java.io.File;
 
+public class SoundItem extends MediaItem {
 
-    private String title;
-    private String soundUrl;
+    public SoundItem(String title, String url) {
+        this.title = title;
+        this.url = url;
+    }
+
+    private SoundItem(Parcel parcel) {
+        setTitle(parcel.readString());
+        setUrl(parcel.readString());
+        setTargetPath(new File(parcel.readString()));
+        setBytesRead(parcel.readLong());
+    }
 
     @Override
     public String getTitle() {
@@ -18,28 +28,6 @@ public class SoundItem implements MediaItem {
     @Override
     public String getIconUrl() {
         return "drawable://" + R.drawable.ic_sound_m;
-    }
-
-    public String getSoundUrl() {
-        return soundUrl;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setSoundUrl(String soundUrl) {
-        this.soundUrl = soundUrl;
-    }
-
-    public SoundItem(String title, String soundUrl) {
-        this.title = title;
-        this.soundUrl = soundUrl;
-    }
-
-    private SoundItem(Parcel parcel) {
-        setTitle(parcel.readString());
-        setSoundUrl(parcel.readString());
     }
 
     public static final Creator<SoundItem> CREATOR = new Creator<SoundItem>() {
@@ -62,14 +50,9 @@ public class SoundItem implements MediaItem {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(title);
-        dest.writeString(soundUrl);
+        dest.writeString(url);
+        dest.writeString(targetPath);
+        dest.writeLong(getBytesRead());
     }
 
-    @Override
-    public String toString() {
-        return "SoundItem{" +
-                "title='" + title + '\'' +
-                ", soundUrl='" + soundUrl + '\'' +
-                '}';
-    }
 }

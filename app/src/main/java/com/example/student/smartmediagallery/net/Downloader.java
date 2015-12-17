@@ -1,7 +1,6 @@
 package com.example.student.smartmediagallery.net;
 
 import android.os.Message;
-import android.util.Log;
 
 import com.example.student.smartmediagallery.model.Downloadable;
 import com.example.student.smartmediagallery.ui.handler.DownloadingHandler;
@@ -43,17 +42,17 @@ public class Downloader implements Runnable, ProgressFileLoader.LoaderListener{
     }
 
     @Override
-    public void onTotalSizeCalculated(long totalSize) {
+    public void onTotalSizeCalculated(String url, long totalSize) {
 
     }
 
     @Override
-    public void onTotalSizeFetched(long totalSize) {
+    public void onTotalSizeFetched(String url, long totalSize) {
         downloadable.setTotalSize(totalSize);
     }
 
     @Override
-    public void onProgressUpdated(long totalSize, long readSize) {
+    public void onProgressUpdated(String url, long totalSize, long readSize) {
         if(!isCanceled || readSize >= downloadable.getTotalSize()) {
             downloadable.setBytesRead(readSize);
             Message message = downloadingHandler.obtainMessage(DownloadingHandler.MESSAGE_IN_PROGRESS, downloadable);
@@ -62,7 +61,7 @@ public class Downloader implements Runnable, ProgressFileLoader.LoaderListener{
     }
 
     @Override
-    public void onDownloadComplete() {
+    public void onDownloadComplete(String url) {
         Message message = downloadingHandler.obtainMessage(DownloadingHandler.MESSAGE_DOWNLOADED, downloadable);
         downloadingHandler.sendMessage(message);
         downloadable.setBytesRead(0);

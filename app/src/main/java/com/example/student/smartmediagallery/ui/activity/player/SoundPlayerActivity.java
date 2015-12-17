@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.example.student.smartmediagallery.constants.TransferConstant;
 import com.example.student.smartmediagallery.model.Downloadable;
 import com.example.student.smartmediagallery.net.Downloader;
-import com.example.student.smartmediagallery.provider.ResourceManager;
+import com.example.student.smartmediagallery.resource.ResourceManager;
 import com.example.student.smartmediagallery.ui.handler.DownloadingHandler;
 import com.example.student.smartmediagallery.R;
 import com.example.student.smartmediagallery.model.SoundItem;
@@ -88,7 +88,7 @@ public class SoundPlayerActivity extends AppCompatActivity{
 
         soundPosition = getIntent().getIntExtra(TransferConstant.CURRENT_MEDIA_POS.toString(), 0);
         sounds = getIntent().getParcelableArrayListExtra(TransferConstant.MEDIA_LIST.toString());
-        soundUrl = sounds.get(soundPosition).getSoundUrl();
+        soundUrl = sounds.get(soundPosition).getUrl();
         title = sounds.get(soundPosition).getTitle();
         tvMusicHeader.setText(title);
         sbMusic.setOnTouchListener(new SoundProgressBarOnTouchListener());
@@ -99,11 +99,8 @@ public class SoundPlayerActivity extends AppCompatActivity{
     protected void onStart() {
         super.onStart();
         ResourceManager resourceManager = new ResourceManager(getApplicationContext());
-        SoundItem sound = sounds.get(soundPosition);
-        String title = sound.getTitle();
-        String url = sound.getSoundUrl();
-        File targetPath = new File(resourceManager.getSoundItemPath(sound));
-        downloadable = new Downloadable(title, url, targetPath);
+        downloadable =  sounds.get(soundPosition);
+        downloadable.setTargetPath(new File(resourceManager.getDownloadablePath(downloadable)));
         downloadingHandler = new MediaDownloadingHandler(this, alertDialogBuilder);
         executorService = Executors.newFixedThreadPool(1);
         downloader = new Downloader(downloadable, downloadingHandler);

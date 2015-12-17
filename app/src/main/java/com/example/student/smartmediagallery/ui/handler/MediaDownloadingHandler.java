@@ -34,7 +34,6 @@ public class MediaDownloadingHandler extends DownloadingHandler {
                 dialogBuilder.setView(dialogContentView);
                 dialogBuilder.create();
                 dialog = dialogBuilder.show();
-                Log.d("mylog", "dialog show!");
 
                 loadingProgressBar = (NumberProgressBar) dialogContentView.findViewById(R.id.pb_loading);
                 textViewLoadingProgress = (TextView) dialogContentView.findViewById(R.id.tv_loading_progress);
@@ -45,7 +44,6 @@ public class MediaDownloadingHandler extends DownloadingHandler {
                 break;
             }
             case MESSAGE_IN_PROGRESS: {
-                Log.d("myupd", "handleMessage - MESSAGE_IN_PROGRESS");
                 int percentDownloaded = (int)((downloadable.getBytesRead() * MAX_PROGRESS) / (float)downloadable.getTotalSize());
                 loadingProgressBar.setProgress(percentDownloaded);
                 textViewLoadingProgress.setText(downloadable.getBytesRead() + "/" + downloadable.getTotalSize() + " bytes");

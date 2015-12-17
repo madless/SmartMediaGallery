@@ -109,6 +109,7 @@ public abstract class MediaListActivity extends AppCompatActivity implements OnM
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     mediaItems.remove(pos);
+                    // may be you need to uncomment this if something go wrong with removing
                     //recyclerView.removeViewAt(pos);
                     mediaListAdapter.notifyItemRemoved(pos);
                     //mediaListAdapter.notifyItemRangeChanged(pos, mediaItems.size());

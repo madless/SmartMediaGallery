@@ -26,23 +26,21 @@ import com.example.student.smartmediagallery.constants.MessageEvent;
 import com.example.student.smartmediagallery.constants.TransferConstant;
 import com.example.student.smartmediagallery.model.Downloadable;
 import com.example.student.smartmediagallery.model.VideoItem;
-import com.example.student.smartmediagallery.provider.ResourceManager;
-import com.example.student.smartmediagallery.service.RefactoredDownloaderService;
+import com.example.student.smartmediagallery.resource.ResourceManager;
+import com.example.student.smartmediagallery.service.DownloaderService;
 import com.example.student.smartmediagallery.ui.handler.DownloadingHandler;
 import com.example.student.smartmediagallery.ui.handler.MediaDownloadingHandler;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
 
-public class RefactoredVideoPlayerActivity extends AppCompatActivity {
+public class VideoPlayerActivity extends AppCompatActivity {
 
     private AlertDialog.Builder alertDialogBuilder;
     private Downloadable downloadable;
     private DownloadingHandler downloadingHandler;
-    private ExecutorService executorService;
     boolean isServiceBounded;
-    RefactoredDownloaderService downloaderService;
+    DownloaderService downloaderService;
     DownloaderServiceConnection downloaderServiceConnection;
 
     DownloadManagerReceiver downloadManagerReceiver;
@@ -52,6 +50,7 @@ public class RefactoredVideoPlayerActivity extends AppCompatActivity {
     VideoView videoview;
     ArrayList<VideoItem> videos;
     int position;
+    ResourceManager resourceManager;
 
     //boolean isCanceled;
 
@@ -74,7 +73,7 @@ public class RefactoredVideoPlayerActivity extends AppCompatActivity {
         try {
             MediaController mediacontroller = new MediaController(this);
             mediacontroller.setAnchorView(videoview);
-            Uri video = Uri.parse(videos.get(position).getVideoUrl());
+            Uri video = Uri.parse(videos.get(position).getUrl());
             videoview.setMediaController(mediacontroller);
             videoview.setVideoURI(video);
 
@@ -90,13 +89,15 @@ public class RefactoredVideoPlayerActivity extends AppCompatActivity {
                 videoview.start();
             }
         });
+
+        resourceManager = new ResourceManager(getApplicationContext());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         Log.d("mylog", "onStartVideoPlayerActivity");
-        alertDialogBuilder = new AlertDialog.Builder(RefactoredVideoPlayerActivity.this);
+        alertDialogBuilder = new AlertDialog.Builder(VideoPlayerActivity.this);
         alertDialogBuilder.setMessage(R.string.dialog_loading_title);
         alertDialogBuilder.setPositiveButton(R.string.dialog_loading_ok_button, new DialogInterface.OnClickListener() {
             @Override
@@ -117,12 +118,7 @@ public class RefactoredVideoPlayerActivity extends AppCompatActivity {
             }
         });
 
-        ResourceManager resourceManager = new ResourceManager(getApplicationContext());
-        VideoItem video = videos.get(position);
-        String title = video.getTitle();
-        String url = video.getVideoUrl();
-        File targetPath = new File(resourceManager.getVideoItemPath(video));
-        downloadable = new Downloadable(title, url, targetPath);
+        downloadable =  videos.get(position);
         downloadingHandler = new MediaDownloadingHandler(this, alertDialogBuilder);
         downloaderServiceConnection = new DownloaderServiceConnection();
 
@@ -141,10 +137,10 @@ public class RefactoredVideoPlayerActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         unregisterReceiver(downloadManagerReceiver);
-        if(isServiceBounded) {
-            unbindService(downloaderServiceConnection);
-            isServiceBounded = false;
-        }
+//        if(isServiceBounded) {
+//            unbindService(downloaderServiceConnection);
+//            isServiceBounded = false;
+//        }
     }
 
     @Override
@@ -164,7 +160,7 @@ public class RefactoredVideoPlayerActivity extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             Log.d("mylog", "onServiceConnected with manager!");
-            RefactoredDownloaderService.DownloaderServiceBinder downloaderServiceBinder = (RefactoredDownloaderService.DownloaderServiceBinder) service;
+            DownloaderService.DownloaderServiceBinder downloaderServiceBinder = (DownloaderService.DownloaderServiceBinder) service;
             downloaderService = downloaderServiceBinder.getService();
             isServiceBounded = true;
             if(!downloaderService.isActive()) {
@@ -215,11 +211,9 @@ public class RefactoredVideoPlayerActivity extends AppCompatActivity {
     }
 
     public void load() {
-        Intent downloaderServiceIntent = new Intent(this, RefactoredDownloaderService.class);
-        downloaderServiceIntent.putExtra(TransferConstant.MEDIA_URL.toString(), downloadable.getUrl());
-        downloaderServiceIntent.putExtra(TransferConstant.TARGET_PATH.toString(), downloadable.getTargetPath().getAbsolutePath());
-        downloaderServiceIntent.putExtra(TransferConstant.READ_SIZE.toString(), downloadable.getBytesRead());
-
+        downloadable.setTargetPath(new File(resourceManager.getDownloadablePath(downloadable)));
+        Intent downloaderServiceIntent = new Intent(this, DownloaderService.class);
+        downloaderServiceIntent.putExtra(TransferConstant.CURRENT_MEDIA.toString(), downloadable);
         startService(downloaderServiceIntent);
         bindService(downloaderServiceIntent, downloaderServiceConnection, Context.BIND_AUTO_CREATE);
     }
@@ -245,11 +239,8 @@ public class RefactoredVideoPlayerActivity extends AppCompatActivity {
             }
             downloadable.setBytesRead(0);
             downloadable.getTargetPath().delete();
-
             Message message = downloadingHandler.obtainMessage(DownloadingHandler.MESSAGE_STOPPED, downloadable);
             downloadingHandler.sendMessage(message);
-
-            stopService(new Intent(this, RefactoredVideoPlayerActivity.class));
         }
     }
 }

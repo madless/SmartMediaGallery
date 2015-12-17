@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.support.annotation.Nullable;
 
+import com.example.student.smartmediagallery.resource.ResourceManager;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -28,7 +30,7 @@ public class InternalFileProvider extends ContentProvider {
         resourceManager = new ResourceManager(getContext());
         switch (uriMatcher.match(uri)) {
             case 1:
-                String fileLocation = resourceManager.getSoundItemPathByUri(uri);
+                String fileLocation = resourceManager.getItemPathByUri(uri);
                 ParcelFileDescriptor sound = ParcelFileDescriptor.open(new File(fileLocation), ParcelFileDescriptor.MODE_READ_ONLY);
                 return sound;
             default:

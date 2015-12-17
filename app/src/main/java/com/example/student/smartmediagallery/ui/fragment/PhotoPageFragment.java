@@ -44,7 +44,7 @@ public class PhotoPageFragment extends Fragment {
         int position = getArguments().getInt(TransferConstant.CURRENT_MEDIA_POS.toString());
         int length = getArguments().getInt(TransferConstant.MEDIA_LIST_LENGTH.toString());
 
-        imageLoader.displayImage(photoItem.getPhotoUrl(), iv, options);
+        imageLoader.displayImage(photoItem.getUrl(), iv, options);
         tvPostionInfo.setText("" + (position + 1) + "/" + length);
         tvPhotoTitle.setText(photoItem.getTitle());
         return view;

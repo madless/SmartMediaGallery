@@ -2,45 +2,22 @@ package com.example.student.smartmediagallery.model;
 
 import android.os.Parcel;
 
-public class VideoItem implements MediaItem {
-    private String title;
-    private String iconUrl;
-    private String videoUrl;
+import java.io.File;
 
-    public VideoItem(String title, String iconUrl, String videoUrl) {
+public class VideoItem extends MediaItem {
+
+    public VideoItem(String title, String iconUrl, String url) {
         this.title = title;
         this.iconUrl = iconUrl;
-        this.videoUrl = videoUrl;
+        this.url = url;
     }
 
-    public VideoItem(Parcel parcel) {
+    private VideoItem(Parcel parcel) {
         setTitle(parcel.readString());
         setIconUrl(parcel.readString());
-        setVideoUrl(parcel.readString());
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setIconUrl(String iconUrl) {
-        this.iconUrl = iconUrl;
-    }
-
-    public void setVideoUrl(String videoUrl) {
-        this.videoUrl = videoUrl;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getIconUrl() {
-        return iconUrl;
-    }
-
-    public String getVideoUrl() {
-        return videoUrl;
+        setUrl(parcel.readString());
+        setTargetPath(new File(parcel.readString()));
+        setBytesRead(parcel.readLong());
     }
 
     public static final Creator<VideoItem> CREATOR = new Creator<VideoItem>() {
@@ -64,15 +41,9 @@ public class VideoItem implements MediaItem {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(title);
         dest.writeString(iconUrl);
-        dest.writeString(videoUrl);
+        dest.writeString(url);
+        dest.writeString(targetPath);
+        dest.writeLong(getBytesRead());
     }
 
-    @Override
-    public String toString() {
-        return "VideoItem{" +
-                "title='" + title + '\'' +
-                ", iconUrl='" + iconUrl + '\'' +
-                ", videoUrl='" + videoUrl + '\'' +
-                '}';
-    }
 }

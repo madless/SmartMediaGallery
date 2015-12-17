@@ -2,21 +2,22 @@ package com.example.student.smartmediagallery.model;
 
 import android.os.Parcel;
 
+import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PhotoItem implements MediaItem {
-    private String iconUrl;
-    private String photoUrl;
+public class PhotoItem extends MediaItem {
 
-    public PhotoItem(String iconUrl, String photoUrl) {
+    public PhotoItem(String iconUrl, String url) {
         this.iconUrl = iconUrl;
-        this.photoUrl = photoUrl;
+        this.url = url;
     }
 
     public PhotoItem(Parcel parcel) {
         this.setIconUrl(parcel.readString());
-        this.setPhotoUrl(parcel.readString());
+        this.setUrl(parcel.readString());
+        this.setTargetPath(new File(parcel.readString()));
+        this.setBytesRead(parcel.readLong());
     }
 
     public static final Creator<PhotoItem> CREATOR = new Creator<PhotoItem>() {
@@ -39,40 +40,18 @@ public class PhotoItem implements MediaItem {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(getIconUrl());
-        dest.writeString(getPhotoUrl());
+        dest.writeString(getUrl());
+        dest.writeString(targetPath);
+        dest.writeLong(getBytesRead());
     }
 
     @Override
     public String getTitle() {
         Pattern pattern = Pattern.compile("\\w*\\.[a-zA-z]+$");
-        Matcher matcher = pattern.matcher(photoUrl);
+        Matcher matcher = pattern.matcher(url);
         if(matcher.find()) {
             return matcher.group();
         }
         return null;
-    }
-
-    public String getIconUrl() {
-        return iconUrl;
-    }
-
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
-
-    public void setIconUrl(String iconUrl) {
-        this.iconUrl = iconUrl;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
-
-    @Override
-    public String toString() {
-        return "PhotoItem{" +
-                "iconUrl='" + iconUrl + '\'' +
-                ", photoUrl='" + photoUrl + '\'' +
-                '}';
     }
 }
