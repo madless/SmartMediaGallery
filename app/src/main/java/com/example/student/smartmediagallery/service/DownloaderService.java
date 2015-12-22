@@ -23,15 +23,15 @@ import java.util.HashMap;
 
 public class DownloaderService extends Service implements ProgressFileLoader.LoaderListener{
 
-    ProgressFileLoaderBasedOnUrlConnection loader;
+    private ProgressFileLoaderBasedOnUrlConnection loader;
     private NotificationManager notificationManager;
-    NotificationCompat.Builder notificationBuilder;
-    boolean active;
-    long totalSize;
-    long readSize;
-    boolean isPaused;
-    DownloaderServiceBinder downloaderServiceBinder;
-    Downloadable downloadable;
+    private NotificationCompat.Builder notificationBuilder;
+    private boolean active;
+    private long totalSize;
+    private long readSize;
+    private boolean isPaused;
+    private DownloaderServiceBinder downloaderServiceBinder;
+    private Downloadable downloadable;
 
     @Override
     public void onCreate() {

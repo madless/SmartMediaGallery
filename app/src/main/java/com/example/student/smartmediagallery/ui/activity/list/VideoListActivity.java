@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.example.student.smartmediagallery.adapter.MediaListAdapter;
 import com.example.student.smartmediagallery.constants.TransferConstant;
-import com.example.student.smartmediagallery.model.ListItem;
 import com.example.student.smartmediagallery.parser.VideoContentXmlParser;
 import com.example.student.smartmediagallery.ui.activity.player.VideoPlayerActivity;
 
@@ -19,14 +18,8 @@ public class VideoListActivity extends MediaListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        VideoContentXmlParser videoContentXmlParser = new VideoContentXmlParser();
-        InputStream videoContentStream = null;
-        try {
-            videoContentStream = getAssets().open("VideoContent.xml");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        mediaItems = videoContentXmlParser.getListOfMediaByXml(videoContentStream);
+        VideoContentXmlParser videoContentXmlParser = parserContainer.getVideoParser();
+        mediaItems = videoContentXmlParser.getMediaList();
         mediaListAdapter = new MediaListAdapter(mediaItems, imageLoader, options);
         recyclerView.setAdapter(mediaListAdapter);
     }

@@ -19,6 +19,11 @@ public abstract class MediaContentXmlParser {
     protected final String MEDIA_ICON_TAG = "iconURL";
     protected List<MediaItem> mediaItems = new ArrayList<>();
     protected BufferedReader reader;
+    protected InputStream inputStream;
+
+    public MediaContentXmlParser(InputStream inputStream) {
+        this.inputStream = inputStream;
+    }
 
     protected XmlPullParser prepareParser() {
         XmlPullParser xpp = null;
@@ -32,5 +37,5 @@ public abstract class MediaContentXmlParser {
         return xpp;
     }
 
-    protected abstract List<MediaItem> getListOfMediaByXml(InputStream stream);
+    protected abstract List<MediaItem> getMediaList();
 }

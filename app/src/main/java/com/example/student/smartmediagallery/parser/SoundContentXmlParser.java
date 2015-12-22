@@ -22,10 +22,14 @@ import java.util.List;
 public class SoundContentXmlParser extends MediaContentXmlParser {
     private final String MEDIA_URL_TAG = "soundURL";
 
+    public SoundContentXmlParser(InputStream inputStream) {
+        super(inputStream);
+    }
+
     @Override
-    public List<MediaItem> getListOfMediaByXml(InputStream stream) {
+    public List<MediaItem> getMediaList() {
         try {
-            reader = new BufferedReader(new InputStreamReader(stream, "UTF8"));
+            reader = new BufferedReader(new InputStreamReader(inputStream, "UTF8"));
             XmlPullParser xpp = prepareParser();
             xpp.setInput(reader);
 

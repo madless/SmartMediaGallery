@@ -18,9 +18,12 @@ import android.widget.Toast;
 import com.example.student.smartmediagallery.R;
 import com.example.student.smartmediagallery.adapter.MediaListAdapter;
 import com.example.student.smartmediagallery.constants.TransferConstant;
+import com.example.student.smartmediagallery.container.Container;
+import com.example.student.smartmediagallery.container.ParserContainer;
 import com.example.student.smartmediagallery.listener.OnMediaItemClickListener;
 import com.example.student.smartmediagallery.listener.RecyclerItemClickListener;
 import com.example.student.smartmediagallery.model.MediaItem;
+import com.example.student.smartmediagallery.resource.ParserManager;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -36,6 +39,8 @@ public abstract class MediaListActivity extends AppCompatActivity implements OnM
     protected MediaListAdapter mediaListAdapter;
     protected ImageLoader imageLoader;
     protected DisplayImageOptions options;
+    protected Container container;
+    protected ParserContainer parserContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +61,8 @@ public abstract class MediaListActivity extends AppCompatActivity implements OnM
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(itemAnimator);
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, this));
+        container = Container.getInstance(this);
+        parserContainer = container.getParserContainer();
 
     }
 

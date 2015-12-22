@@ -17,10 +17,15 @@ import java.util.List;
  */
 public class VideoContentXmlParser extends MediaContentXmlParser {
     private final String MEDIA_URL_TAG = "videoURL";
+
+    public VideoContentXmlParser(InputStream inputStream) {
+        super(inputStream);
+    }
+
     @Override
-    public List<MediaItem> getListOfMediaByXml(InputStream stream) {
+    public List<MediaItem> getMediaList() {
         try {
-            reader = new BufferedReader(new InputStreamReader(stream, "UTF8"));
+            reader = new BufferedReader(new InputStreamReader(inputStream, "UTF8"));
             XmlPullParser xpp = prepareParser();
             xpp.setInput(reader);
             String lastEventElementName = "";

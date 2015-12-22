@@ -17,12 +17,16 @@ import java.util.List;
  * Created by student on 07.12.2015.
  */
 
-public class PhotoContentXmlParser extends MediaContentXmlParser{
+public class PhotoContentXmlParser extends MediaContentXmlParser {
     private final String MEDIA_URL_TAG = "photoURL";
 
-    public List<MediaItem> getListOfMediaByXml(InputStream stream) {
+    public PhotoContentXmlParser(InputStream inputStream) {
+        super(inputStream);
+    }
+
+    public List<MediaItem> getMediaList() {
         try {
-            reader = new BufferedReader(new InputStreamReader(stream, "UTF8"));
+            reader = new BufferedReader(new InputStreamReader(inputStream, "UTF8"));
             XmlPullParser xpp = prepareParser();
             xpp.setInput(reader);
 

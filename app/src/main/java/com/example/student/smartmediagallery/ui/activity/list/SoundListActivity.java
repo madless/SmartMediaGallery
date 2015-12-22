@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.example.student.smartmediagallery.adapter.MediaListAdapter;
 import com.example.student.smartmediagallery.constants.TransferConstant;
-import com.example.student.smartmediagallery.model.ListItem;
 import com.example.student.smartmediagallery.parser.SoundContentXmlParser;
 import com.example.student.smartmediagallery.ui.activity.player.SoundPlayerActivity;
 
@@ -23,14 +22,8 @@ public class SoundListActivity extends MediaListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SoundContentXmlParser soundContentXmlParser = new SoundContentXmlParser();
-        InputStream soundContentStream = null;
-        try {
-            soundContentStream = getAssets().open("SoundBoardContent.xml");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        mediaItems = soundContentXmlParser.getListOfMediaByXml(soundContentStream);
+        SoundContentXmlParser soundContentXmlParser = parserContainer.getSoundParser();
+        mediaItems = soundContentXmlParser.getMediaList();
         mediaListAdapter = new MediaListAdapter(mediaItems, imageLoader, options);
         recyclerView.setAdapter(mediaListAdapter);
     }

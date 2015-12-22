@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.example.student.smartmediagallery.adapter.MediaListAdapter;
 import com.example.student.smartmediagallery.constants.TransferConstant;
-import com.example.student.smartmediagallery.model.ListItem;
+import com.example.student.smartmediagallery.container.Container;
 import com.example.student.smartmediagallery.parser.PhotoContentXmlParser;
 import com.example.student.smartmediagallery.ui.activity.pager.PhotoPagerActivity;
 
@@ -19,14 +19,8 @@ public class PhotoListActivity extends MediaListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PhotoContentXmlParser photoContentXmlParser = new PhotoContentXmlParser();
-        InputStream photoContentStream = null;
-        try {
-            photoContentStream = getAssets().open("PhotoContent.xml");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        mediaItems = photoContentXmlParser.getListOfMediaByXml(photoContentStream);
+        PhotoContentXmlParser photoContentXmlParser = parserContainer.getPhotoParser();
+        mediaItems = photoContentXmlParser.getMediaList();
         mediaListAdapter = new MediaListAdapter(mediaItems, imageLoader, options);
         recyclerView.setAdapter(mediaListAdapter);
     }
