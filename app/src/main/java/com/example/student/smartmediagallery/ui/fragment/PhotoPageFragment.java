@@ -10,8 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.student.smartmediagallery.R;
-import com.example.student.smartmediagallery.constants.TransferConstant;
-import com.example.student.smartmediagallery.model.PhotoItem;
+import com.example.student.smartmediagallery.core.constants.TransferConstant;
+import com.example.student.smartmediagallery.core.model.PhotoItem;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 

@@ -4,15 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.student.smartmediagallery.adapter.MediaListAdapter;
-import com.example.student.smartmediagallery.constants.TransferConstant;
-import com.example.student.smartmediagallery.container.Container;
-import com.example.student.smartmediagallery.parser.PhotoContentXmlParser;
+import com.example.student.smartmediagallery.core.constants.TransferConstant;
+import com.example.student.smartmediagallery.core.model.PhotoItem;
+import com.example.student.smartmediagallery.core.parser.PhotoContentXmlParser;
 import com.example.student.smartmediagallery.ui.activity.pager.PhotoPagerActivity;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 public class PhotoListActivity extends MediaListActivity {
@@ -27,11 +26,15 @@ public class PhotoListActivity extends MediaListActivity {
 
     @Override
     public void onMediaItemClick(View view, int position) {
-        Intent photoPagerIntent = new Intent(PhotoListActivity.this, PhotoPagerActivity.class);
-        photoPagerIntent.putExtra(TransferConstant.CURRENT_MEDIA_POS.toString(), position);
-        ArrayList<? extends Parcelable> parcelablePhotos = new ArrayList<>((ArrayList<? extends Parcelable>) mediaItems);
-        photoPagerIntent.putParcelableArrayListExtra(TransferConstant.MEDIA_LIST.toString(), parcelablePhotos);
-        startActivity(photoPagerIntent);
+        if(purchaseModeProxy.isAvailablePhoto(position, (PhotoItem) mediaItems.get(position))) {
+            Intent photoPagerIntent = new Intent(PhotoListActivity.this, PhotoPagerActivity.class);
+            photoPagerIntent.putExtra(TransferConstant.CURRENT_MEDIA_POS.toString(), position);
+            ArrayList<? extends Parcelable> parcelablePhotos = new ArrayList<>((ArrayList<? extends Parcelable>) mediaItems);
+            photoPagerIntent.putParcelableArrayListExtra(TransferConstant.MEDIA_LIST.toString(), parcelablePhotos);
+            startActivity(photoPagerIntent);
+        } else {
+            Toast.makeText(this, "Buy full version to unlock this photo", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

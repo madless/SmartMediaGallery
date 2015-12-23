@@ -4,4 +4,5 @@
     <item android:id="@+id/menu_item_photo" app:showAsAction="ifRoom"  android:icon="@mipmap/ic_photo_white" android:title="@string/menu_item_photo_title"/>
     <item android:id="@+id/menu_item_music" app:showAsAction="ifRoom"  android:icon="@mipmap/ic_sound_white" android:title="@string/menu_item_music_title"/>
     <item android:id="@+id/menu_item_video" app:showAsAction="ifRoom"  android:icon="@mipmap/ic_video_white" android:title="@string/menu_item_video_title"/>
+    <item android:id="@+id/menu_item_buy" app:showAsAction="ifRoom" android:icon="@mipmap/ic_buy" android:title="Buy"/>
 </menu>

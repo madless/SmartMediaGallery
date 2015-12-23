@@ -1,29 +1,31 @@
 package com.example.student.smartmediagallery.ui.activity.list;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.student.smartmediagallery.R;
 import com.example.student.smartmediagallery.adapter.MediaListAdapter;
-import com.example.student.smartmediagallery.constants.TransferConstant;
-import com.example.student.smartmediagallery.container.Container;
-import com.example.student.smartmediagallery.container.ParserContainer;
-import com.example.student.smartmediagallery.listener.OnMediaItemClickListener;
-import com.example.student.smartmediagallery.listener.RecyclerItemClickListener;
-import com.example.student.smartmediagallery.model.MediaItem;
-import com.example.student.smartmediagallery.resource.ParserManager;
+import com.example.student.smartmediagallery.core.constants.TransferConstant;
+import com.example.student.smartmediagallery.core.container.Container;
+import com.example.student.smartmediagallery.core.container.ParserContainer;
+import com.example.student.smartmediagallery.core.listener.OnMediaItemClickListener;
+import com.example.student.smartmediagallery.core.listener.RecyclerItemClickListener;
+import com.example.student.smartmediagallery.core.manager.PurchaseManager;
+import com.example.student.smartmediagallery.core.model.MediaItem;
+import com.example.student.smartmediagallery.ui.activity.BaseActivity;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -33,14 +35,12 @@ import java.util.List;
 /**
  * Created by student on 09.12.2015.
  */
-public abstract class MediaListActivity extends AppCompatActivity implements OnMediaItemClickListener {
+public abstract class MediaListActivity extends BaseActivity implements OnMediaItemClickListener {
     protected RecyclerView recyclerView;
     protected List<MediaItem> mediaItems;
     protected MediaListAdapter mediaListAdapter;
     protected ImageLoader imageLoader;
     protected DisplayImageOptions options;
-    protected Container container;
-    protected ParserContainer parserContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +61,11 @@ public abstract class MediaListActivity extends AppCompatActivity implements OnM
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(itemAnimator);
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, this));
-        container = Container.getInstance(this);
-        parserContainer = container.getParserContainer();
 
+
+//        LinearLayout rootView = (LinearLayout) findViewById(R.id.media_list_root);
+//        header = getLayoutInflater().inflate(R.layout.purchase_header, rootView);
+//        rootView.addView(header);
     }
 
     @Override
@@ -91,6 +93,10 @@ public abstract class MediaListActivity extends AppCompatActivity implements OnM
                 startActivity(mediaIntent);
                 return true;
             }
+            case R.id.menu_item_buy:{
+                purchaseManager.purchase();
+                return true;
+            }
             default: {
                 return super.onOptionsItemSelected(item);
             }
@@ -106,6 +112,7 @@ public abstract class MediaListActivity extends AppCompatActivity implements OnM
         removeMediaDialogFragment.show(getSupportFragmentManager(), "tag");
     }
 
+    @SuppressLint("ValidFragment")
     public class RemoveMediaDialogFragment extends DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {

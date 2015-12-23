@@ -22,17 +22,19 @@ import android.widget.MediaController;
 import android.widget.VideoView;
 
 import com.example.student.smartmediagallery.R;
-import com.example.student.smartmediagallery.constants.MessageEvent;
-import com.example.student.smartmediagallery.constants.TransferConstant;
-import com.example.student.smartmediagallery.model.Downloadable;
-import com.example.student.smartmediagallery.model.VideoItem;
-import com.example.student.smartmediagallery.resource.ResourceManager;
-import com.example.student.smartmediagallery.service.DownloaderService;
+import com.example.student.smartmediagallery.core.constants.MessageEvent;
+import com.example.student.smartmediagallery.core.constants.TransferConstant;
+import com.example.student.smartmediagallery.core.model.Downloadable;
+import com.example.student.smartmediagallery.core.model.VideoItem;
+import com.example.student.smartmediagallery.core.manager.ResourceManager;
+import com.example.student.smartmediagallery.service.MultiDownloaderService;
 import com.example.student.smartmediagallery.ui.handler.DownloadingHandler;
 import com.example.student.smartmediagallery.ui.handler.MediaDownloadingHandler;
 
 import java.io.File;
 import java.util.ArrayList;
+
+//import com.example.student.smartmediagallery.service.DownloaderService;
 
 public class VideoPlayerActivity extends AppCompatActivity {
 
@@ -40,7 +42,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
     private Downloadable downloadable;
     private DownloadingHandler downloadingHandler;
     boolean isServiceBounded;
-    DownloaderService downloaderService;
+    MultiDownloaderService multiDownloaderService;
     DownloaderServiceConnection downloaderServiceConnection;
 
     DownloadManagerReceiver downloadManagerReceiver;
@@ -51,8 +53,6 @@ public class VideoPlayerActivity extends AppCompatActivity {
     ArrayList<VideoItem> videos;
     int position;
     ResourceManager resourceManager;
-
-    //boolean isCanceled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,10 +137,10 @@ public class VideoPlayerActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         unregisterReceiver(downloadManagerReceiver);
-//        if(isServiceBounded) {
-//            unbindService(downloaderServiceConnection);
-//            isServiceBounded = false;
-//        }
+        if(isServiceBounded) {
+            unbindService(downloaderServiceConnection);
+            isServiceBounded = false;
+        }
     }
 
     @Override
@@ -160,11 +160,11 @@ public class VideoPlayerActivity extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             Log.d("mylog", "onServiceConnected with manager!");
-            DownloaderService.DownloaderServiceBinder downloaderServiceBinder = (DownloaderService.DownloaderServiceBinder) service;
-            downloaderService = downloaderServiceBinder.getService();
+            MultiDownloaderService.MultiDownloaderServiceBinder downloaderServiceBinder = (MultiDownloaderService.MultiDownloaderServiceBinder) service;
+            multiDownloaderService = downloaderServiceBinder.getService();
             isServiceBounded = true;
-            if(!downloaderService.isActive()) {
-                downloaderService.startLoading();
+            if(!multiDownloaderService.isActive(downloadable.getUrl())) {
+                multiDownloaderService.startLoading(downloadable.getUrl()); //downloadable.getUrl()
             }
         }
         @Override
@@ -177,34 +177,39 @@ public class VideoPlayerActivity extends AppCompatActivity {
     public class DownloadManagerReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            MessageEvent event = MessageEvent.valueOf(intent.getStringExtra(TransferConstant.MESSAGE_EVENT.toString()));
-            switch (event) {
-                case MESSAGE_INIT: {
-                    long totalSize = intent.getLongExtra(TransferConstant.TOTAL_SIZE.toString(), -1);
-                    downloadable.setTotalSize(totalSize);
-                    Message message = downloadingHandler.obtainMessage(DownloadingHandler.MESSAGE_INIT, downloadable);
-                    downloadingHandler.sendMessage(message);
-                    Log.d("mylog", "init received");
-                    break;
-                }
-                case MESSAGE_IN_PROGRESS: {
-                    long readSize = intent.getLongExtra(TransferConstant.READ_SIZE.toString(), -1);
-                    if(!(readSize >= downloadable.getTotalSize())) {
-                        downloadable.setBytesRead(readSize);
-                        Message message = downloadingHandler.obtainMessage(DownloadingHandler.MESSAGE_IN_PROGRESS, downloadable);
+            if(downloadable.getUrl().equals(intent.getStringExtra(TransferConstant.MEDIA_URL.toString()))) {
+                MessageEvent event = MessageEvent.valueOf(intent.getStringExtra(TransferConstant.MESSAGE_EVENT.toString()));
+                switch (event) {
+                    case MESSAGE_INIT: {
+                        long totalSize = intent.getLongExtra(TransferConstant.TOTAL_SIZE.toString(), -1);
+                        downloadable.setTotalSize(totalSize);
+                        Message message = downloadingHandler.obtainMessage(DownloadingHandler.MESSAGE_INIT, downloadable);
                         downloadingHandler.sendMessage(message);
+                        Log.d("mylog", "init received");
+                        break;
                     }
-                    break;
-                }
-                case MESSAGE_DOWNLOADED: {
-                    unbindService(downloaderServiceConnection);
-                    Message message = downloadingHandler.obtainMessage(DownloadingHandler.MESSAGE_DOWNLOADED, downloadable);
-                    downloadingHandler.sendMessage(message);
-                    downloadable.setBytesRead(0);
-                    break;
-                }
-                default: {
-                    break;
+                    case MESSAGE_IN_PROGRESS: {
+                        long readSize = intent.getLongExtra(TransferConstant.READ_SIZE.toString(), -1);
+                        if (!(readSize >= downloadable.getTotalSize())) {
+                            downloadable.setBytesRead(readSize);
+                            Message message = downloadingHandler.obtainMessage(DownloadingHandler.MESSAGE_IN_PROGRESS, downloadable);
+                            downloadingHandler.sendMessage(message);
+                        }
+                        break;
+                    }
+                    case MESSAGE_DOWNLOADED: {
+                        if (isServiceBounded) {
+                            unbindService(downloaderServiceConnection);
+                            isServiceBounded = false;
+                        }
+                        Message message = downloadingHandler.obtainMessage(DownloadingHandler.MESSAGE_DOWNLOADED, downloadable);
+                        downloadingHandler.sendMessage(message);
+                        downloadable.setBytesRead(0);
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
                 }
             }
         }
@@ -212,7 +217,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
     public void load() {
         downloadable.setTargetPath(new File(resourceManager.getDownloadablePath(downloadable)));
-        Intent downloaderServiceIntent = new Intent(this, DownloaderService.class);
+        Intent downloaderServiceIntent = new Intent(this, MultiDownloaderService.class);
         downloaderServiceIntent.putExtra(TransferConstant.CURRENT_MEDIA.toString(), downloadable);
         startService(downloaderServiceIntent);
         bindService(downloaderServiceIntent, downloaderServiceConnection, Context.BIND_AUTO_CREATE);
@@ -220,7 +225,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
     public void pause() {
         if(isServiceBounded) {
-            downloaderService.pauseLoading();
+            multiDownloaderService.pauseLoading(downloadable.getUrl());
             Message message = downloadingHandler.obtainMessage(DownloadingHandler.MESSAGE_PAUSED, downloadable);
             downloadingHandler.sendMessage(message);
             if(isServiceBounded) {
@@ -232,7 +237,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
     public void stop() {
         if(isServiceBounded) {
-            downloaderService.stopLoading();
+            multiDownloaderService.stopLoading(downloadable.getUrl());
             if(isServiceBounded){
                 unbindService(downloaderServiceConnection);
                 isServiceBounded = false;

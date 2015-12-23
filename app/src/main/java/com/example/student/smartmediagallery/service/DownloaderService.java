@@ -11,27 +11,25 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.student.smartmediagallery.R;
-import com.example.student.smartmediagallery.constants.MessageEvent;
-import com.example.student.smartmediagallery.constants.TransferConstant;
-import com.example.student.smartmediagallery.model.Downloadable;
-import com.example.student.smartmediagallery.model.Notificator;
+import com.example.student.smartmediagallery.core.constants.MessageEvent;
+import com.example.student.smartmediagallery.core.constants.TransferConstant;
+import com.example.student.smartmediagallery.core.model.Downloadable;
 import com.example.student.smartmediagallery.net.ProgressFileLoader;
 import com.example.student.smartmediagallery.net.ProgressFileLoaderBasedOnUrlConnection;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 public class DownloaderService extends Service implements ProgressFileLoader.LoaderListener{
 
-    private ProgressFileLoaderBasedOnUrlConnection loader;
+    ProgressFileLoaderBasedOnUrlConnection loader;
     private NotificationManager notificationManager;
-    private NotificationCompat.Builder notificationBuilder;
-    private boolean active;
-    private long totalSize;
-    private long readSize;
-    private boolean isPaused;
-    private DownloaderServiceBinder downloaderServiceBinder;
-    private Downloadable downloadable;
+    NotificationCompat.Builder notificationBuilder;
+    boolean active;
+    long totalSize;
+    long readSize;
+    boolean isPaused;
+    DownloaderServiceBinder downloaderServiceBinder;
+    Downloadable downloadable;
 
     @Override
     public void onCreate() {

@@ -2,7 +2,7 @@ package com.example.student.smartmediagallery.net;
 
 import android.os.Message;
 
-import com.example.student.smartmediagallery.model.Downloadable;
+import com.example.student.smartmediagallery.core.model.Downloadable;
 import com.example.student.smartmediagallery.ui.handler.DownloadingHandler;
 
 import java.io.IOException;

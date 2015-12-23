@@ -25,12 +25,14 @@
 
         <provider
             android:authorities="com.example.student.smartmediagallery.internal_file_provider"
-            android:name=".provider.InternalFileProvider"
+            android:name=".core.provider.InternalFileProvider"
             android:enabled="true"
             android:grantUriPermissions="true">
         </provider>
 
         <service android:name=".service.DownloaderService"/>
+        <service android:name=".service.MultiDownloaderService"/>
+
         <receiver android:name=".ui.activity.player.VideoPlayerActivity$DownloadManagerReceiver"></receiver>
 
     </application>

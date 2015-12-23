@@ -14,15 +14,15 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.example.student.smartmediagallery.constants.TransferConstant;
-import com.example.student.smartmediagallery.model.Downloadable;
+import com.example.student.smartmediagallery.core.constants.TransferConstant;
+import com.example.student.smartmediagallery.core.model.Downloadable;
 import com.example.student.smartmediagallery.net.Downloader;
-import com.example.student.smartmediagallery.resource.ResourceManager;
+import com.example.student.smartmediagallery.core.manager.ResourceManager;
 import com.example.student.smartmediagallery.ui.handler.DownloadingHandler;
 import com.example.student.smartmediagallery.R;
-import com.example.student.smartmediagallery.model.SoundItem;
+import com.example.student.smartmediagallery.core.model.SoundItem;
 import com.example.student.smartmediagallery.ui.handler.MediaDownloadingHandler;
-import com.example.student.smartmediagallery.provider.ProviderContract;
+import com.example.student.smartmediagallery.core.provider.ProviderContract;
 
 import java.io.File;
 import java.io.IOException;

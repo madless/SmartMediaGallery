@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.student.smartmediagallery.R;
-import com.example.student.smartmediagallery.model.ListItem;
+import com.example.student.smartmediagallery.core.model.ListItem;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
