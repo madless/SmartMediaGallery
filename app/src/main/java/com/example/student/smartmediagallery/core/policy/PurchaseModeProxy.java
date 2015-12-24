@@ -23,42 +23,36 @@ public class PurchaseModeProxy {
         this.purchaseManager = purchaseManager;
     }
 
-    public boolean isAvailablePhoto(int id, PhotoItem photoItem) {
+    public void checkIfPurchased() {
         if(purchaseManager.isPurchased()) {
             Log.d("mylog", "purchased photo");
             currentPurchaseMode = purchaseFullMode;
         } else {
             Log.d("mylog", "not purchased photo");
         }
+    }
+
+    public boolean isAvailablePhoto(int id, PhotoItem photoItem) {
+        checkIfPurchased();
         return currentPurchaseMode.isAvailablePhoto(id, photoItem);
     }
 
     public boolean isAvailableSound(int id, SoundItem soundItem) {
-        if(purchaseManager.isPurchased()) {
-            Log.d("mylog", "purchased sound");
-            currentPurchaseMode = purchaseFullMode;
-        } else {
-            Log.d("mylog", "not purchased sound");
-        }
+        checkIfPurchased();
         return currentPurchaseMode.isAvailableSound(id, soundItem);
     }
 
     public boolean isAvailableVideo(int id, VideoItem videoItem) {
-        if(purchaseManager.isPurchased()) {
-            Log.d("mylog", "purchased video");
-            currentPurchaseMode = purchaseFullMode;
-        } else {
-            Log.d("mylog", "not purchased video");
-        }
+        checkIfPurchased();
         return currentPurchaseMode.isAvailableVideo(id, videoItem);
     }
 
     public boolean isHeaderVisible() {
         if(purchaseManager.isPurchased()) {
-            Log.d("mylog", "purchased header");
+            Log.d("mylog", "purchased buttonPurchase");
             currentPurchaseMode = purchaseFullMode;
         } else {
-            Log.d("mylog", "not purchased header");
+            Log.d("mylog", "not purchased buttonPurchase");
         }
         return currentPurchaseMode.isHeaderVisible();
     }

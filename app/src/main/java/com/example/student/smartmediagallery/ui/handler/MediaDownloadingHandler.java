@@ -46,7 +46,7 @@ public class MediaDownloadingHandler extends DownloadingHandler {
                 textViewLoadingFileName.setText(downloadable.getTitle());
                 int percentDownloaded = (int)((downloadable.getBytesRead() * MAX_PROGRESS) / (float)downloadable.getTotalSize());
                 loadingProgressBar.setProgress(percentDownloaded);
-                textViewLoadingProgress.setText(downloadable.getBytesRead() + "/" + downloadable.getTotalSize() + " bytes");
+                textViewLoadingProgress.setText(downloadable.getBytesRead() + "/" + downloadable.getTotalSize() + context.getString(R.string.measure));
                 break;
             }
             case MESSAGE_PAUSED: {

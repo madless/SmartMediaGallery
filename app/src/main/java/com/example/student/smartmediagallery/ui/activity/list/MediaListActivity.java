@@ -2,30 +2,33 @@ package com.example.student.smartmediagallery.ui.activity.list;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.student.smartmediagallery.R;
 import com.example.student.smartmediagallery.adapter.MediaListAdapter;
 import com.example.student.smartmediagallery.core.constants.TransferConstant;
 import com.example.student.smartmediagallery.core.container.Container;
-import com.example.student.smartmediagallery.core.container.ParserContainer;
 import com.example.student.smartmediagallery.core.listener.OnMediaItemClickListener;
+import com.example.student.smartmediagallery.core.listener.PurchaseObserver;
 import com.example.student.smartmediagallery.core.listener.RecyclerItemClickListener;
 import com.example.student.smartmediagallery.core.manager.PurchaseManager;
 import com.example.student.smartmediagallery.core.model.MediaItem;
-import com.example.student.smartmediagallery.ui.activity.BaseActivity;
+import com.example.student.smartmediagallery.core.policy.PurchaseModeProxy;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -35,7 +38,14 @@ import java.util.List;
 /**
  * Created by student on 09.12.2015.
  */
-public abstract class MediaListActivity extends BaseActivity implements OnMediaItemClickListener {
+public abstract class MediaListActivity extends AppCompatActivity implements PurchaseObserver, OnMediaItemClickListener {
+    private ProgressDialog progressDialog;
+    protected Container container;
+    protected PurchaseManager purchaseManager;
+    protected PurchaseModeProxy purchaseModeProxy;
+    protected Button buttonPurchase;
+    protected View header;
+
     protected RecyclerView recyclerView;
     protected List<MediaItem> mediaItems;
     protected MediaListAdapter mediaListAdapter;
@@ -63,9 +73,22 @@ public abstract class MediaListActivity extends BaseActivity implements OnMediaI
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, this));
 
 
-//        LinearLayout rootView = (LinearLayout) findViewById(R.id.media_list_root);
-//        header = getLayoutInflater().inflate(R.layout.purchase_header, rootView);
-//        rootView.addView(header);
+        header = findViewById(R.id.purchase_header);
+        buttonPurchase = (Button) header.findViewById(R.id.button_purchase);
+        buttonPurchase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                purchaseManager.purchase();
+            }
+        });
+
+        container = Container.getInstance(this);
+        purchaseManager = container.getPurchaseManager();
+        purchaseModeProxy = new PurchaseModeProxy(purchaseManager);
+
+        if(container.getPurchaseManager().isPurchased()) {
+            header.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -91,10 +114,6 @@ public abstract class MediaListActivity extends BaseActivity implements OnMediaI
             case R.id.menu_item_video: {
                 mediaIntent = new Intent(this, VideoListActivity.class);
                 startActivity(mediaIntent);
-                return true;
-            }
-            case R.id.menu_item_buy:{
-                purchaseManager.purchase();
                 return true;
             }
             default: {
@@ -137,5 +156,35 @@ public abstract class MediaListActivity extends BaseActivity implements OnMediaI
             });
             return ad.create();
         }
+    }
+
+    @Override
+    public void onPreparePurchasing() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle(getString(R.string.progress_dialog_purchase_header));
+        progressDialog.setMessage(getString(R.string.progress_dialog_purchase_text));
+        progressDialog.setIndeterminate(false);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        Log.d("mylog", "progress dialog is showing");
+    }
+
+    @Override
+    public void onPurchased() {
+        Toast.makeText(this, R.string.toast_purchase_success, Toast.LENGTH_SHORT).show();
+        progressDialog.dismiss();
+        header.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        purchaseManager.subscribe(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        purchaseManager.unsubscribe(this);
     }
 }

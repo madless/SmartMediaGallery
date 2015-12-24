@@ -6,9 +6,12 @@ import android.os.Parcelable;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.student.smartmediagallery.R;
 import com.example.student.smartmediagallery.adapter.MediaListAdapter;
+import com.example.student.smartmediagallery.core.constants.ParserType;
 import com.example.student.smartmediagallery.core.constants.TransferConstant;
 import com.example.student.smartmediagallery.core.model.PhotoItem;
+import com.example.student.smartmediagallery.core.parser.ParserFactory;
 import com.example.student.smartmediagallery.core.parser.PhotoContentXmlParser;
 import com.example.student.smartmediagallery.ui.activity.pager.PhotoPagerActivity;
 
@@ -18,7 +21,9 @@ public class PhotoListActivity extends MediaListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PhotoContentXmlParser photoContentXmlParser = parserContainer.getPhotoParser();
+        ParserFactory parserFactory = container.getParserFactory();
+        parserFactory.prepareFactory(this);
+        PhotoContentXmlParser photoContentXmlParser = (PhotoContentXmlParser) parserFactory.createParserByType(ParserType.PHOTO_PARSER);
         mediaItems = photoContentXmlParser.getMediaList();
         mediaListAdapter = new MediaListAdapter(mediaItems, imageLoader, options);
         recyclerView.setAdapter(mediaListAdapter);
@@ -33,7 +38,7 @@ public class PhotoListActivity extends MediaListActivity {
             photoPagerIntent.putParcelableArrayListExtra(TransferConstant.MEDIA_LIST.toString(), parcelablePhotos);
             startActivity(photoPagerIntent);
         } else {
-            Toast.makeText(this, "Buy full version to unlock this photo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.toast_purchase_offer, Toast.LENGTH_SHORT).show();
         }
     }
 

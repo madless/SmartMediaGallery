@@ -3,6 +3,7 @@ package com.example.student.smartmediagallery.core.container;
 import android.content.Context;
 
 import com.example.student.smartmediagallery.core.manager.PurchaseManager;
+import com.example.student.smartmediagallery.core.parser.ParserFactory;
 import com.example.student.smartmediagallery.core.provider.InternalFileProvider;
 
 public class Container {
@@ -12,7 +13,7 @@ public class Container {
 
     private InternalFileProvider fileProvider;
 
-    private ParserContainer parserContainer;
+    private ParserFactory parserFactory;
 
     private PurchaseManager purchaseManager;
 
@@ -38,11 +39,11 @@ public class Container {
         return fileProvider;
     }
 
-    public ParserContainer getParserContainer() {
-        if(parserContainer == null) {
-            parserContainer = ParserContainer.getInstance(context);
+    public ParserFactory getParserFactory() {
+        if(parserFactory == null) {
+            parserFactory = ParserFactory.getInstance();
         }
-        return parserContainer;
+        return parserFactory;
     }
 
     public PurchaseManager getPurchaseManager() {

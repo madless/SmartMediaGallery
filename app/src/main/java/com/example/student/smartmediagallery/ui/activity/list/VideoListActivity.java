@@ -6,10 +6,14 @@ import android.os.Parcelable;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.student.smartmediagallery.R;
 import com.example.student.smartmediagallery.adapter.MediaListAdapter;
+import com.example.student.smartmediagallery.core.constants.ParserType;
 import com.example.student.smartmediagallery.core.constants.TransferConstant;
 import com.example.student.smartmediagallery.core.model.SoundItem;
 import com.example.student.smartmediagallery.core.model.VideoItem;
+import com.example.student.smartmediagallery.core.parser.ParserFactory;
+import com.example.student.smartmediagallery.core.parser.PhotoContentXmlParser;
 import com.example.student.smartmediagallery.core.parser.VideoContentXmlParser;
 import com.example.student.smartmediagallery.ui.activity.player.VideoPlayerActivity;
 
@@ -19,7 +23,9 @@ public class VideoListActivity extends MediaListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        VideoContentXmlParser videoContentXmlParser = parserContainer.getVideoParser();
+        ParserFactory parserFactory = container.getParserFactory();
+        parserFactory.prepareFactory(this);
+        VideoContentXmlParser videoContentXmlParser = (VideoContentXmlParser) parserFactory.createParserByType(ParserType.VIDEO_PARSER);
         mediaItems = videoContentXmlParser.getMediaList();
         mediaListAdapter = new MediaListAdapter(mediaItems, imageLoader, options);
         recyclerView.setAdapter(mediaListAdapter);
@@ -34,7 +40,7 @@ public class VideoListActivity extends MediaListActivity {
             videoPlayerIntent.putParcelableArrayListExtra(TransferConstant.MEDIA_LIST.toString(), parcelableVideos);
             startActivity(videoPlayerIntent);
         } else {
-            Toast.makeText(this, "Buy full version to unlock this video", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.toast_purchase_offer_video, Toast.LENGTH_SHORT).show();
         }
 
     }

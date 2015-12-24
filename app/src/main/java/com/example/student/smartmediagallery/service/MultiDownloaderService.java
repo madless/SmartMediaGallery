@@ -98,7 +98,7 @@ public class MultiDownloaderService extends Service implements ProgressFileLoade
             requestsModel.setReadSizeByUrl(url, readSize);
             int percentDownloaded = (int)((readSize * 100) / requestsModel.getTotalSizeByUrl(url));
             notificationBuilder.setProgress(100, percentDownloaded, false);
-            notificationBuilder.setContentText("Downloading: " + readSize + "/" + requestsModel.getTotalSizeByUrl(url));
+            notificationBuilder.setContentText(getString(R.string.notification_downloading) + readSize + "/" + requestsModel.getTotalSizeByUrl(url));
             notificationBuilder.setContentTitle(requestsModel.getTitleByUrl(url));
             notificationManager.notify(requestsModel.getLoadCommandIdByUrl(url), notificationBuilder.build());
             Intent progressUpdatedIntent = new Intent(getString(R.string.action_receiver_download_manager));
@@ -115,7 +115,7 @@ public class MultiDownloaderService extends Service implements ProgressFileLoade
     @Override
     public void onDownloadComplete(String url) {
         requestsModel.setReadSizeByUrl(url, 0);
-        notificationBuilder.setContentText("Downloaded").setProgress(0, 0, false);
+        notificationBuilder.setContentText(getString(R.string.notification_downloaded)).setProgress(0, 0, false);
         notificationBuilder.setContentTitle(requestsModel.getTitleByUrl(url));
         notificationManager.notify(requestsModel.getLoadCommandIdByUrl(url), notificationBuilder.build());
         Intent downloadCompleteIntent = new Intent(getString(R.string.action_receiver_download_manager));

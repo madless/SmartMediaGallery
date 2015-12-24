@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Buy to unlock content"
+        android:text="@string/text_view_purchase_info"
         android:id="@+id/textView"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
@@ -18,11 +18,12 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Buy application"
-        android:id="@+id/button"
+        android:text="@string/button_buy_app"
+        android:id="@+id/button_purchase"
         android:layout_gravity="center_vertical|right"
         android:layout_weight="1"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp" />
 </LinearLayout>

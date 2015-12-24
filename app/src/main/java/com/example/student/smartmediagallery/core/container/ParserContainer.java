@@ -26,6 +26,7 @@ public class ParserContainer {
 
     private ParserContainer(Context context) {
         this.context = context;
+        parserManager = new ParserManager(context);
     }
 
     public static ParserContainer getInstance(Context context) {
@@ -40,33 +41,36 @@ public class ParserContainer {
     }
 
     public ParserManager getParserManager() {
-        if(parserManager == null) {
-            parserManager = new ParserManager(context);
-        }
         return parserManager;
     }
 
     public VideoContentXmlParser getVideoParser() {
-        if(videoParser == null) {
-            InputStream inputStream = getParserManager().getStreamByParserType(ParserType.VIDEO_PARSER);
-            videoParser = new VideoContentXmlParser(inputStream);
-        }
-        return videoParser;
+//        if(videoParser == null) {
+//            InputStream inputStream = getParserManager().getStreamByParserType(ParserType.VIDEO_PARSER);
+//            videoParser = new VideoContentXmlParser(inputStream);
+//        }
+//        return videoParser;
+        InputStream inputStream = getParserManager().getStreamByParserType(ParserType.VIDEO_PARSER);
+        return new VideoContentXmlParser(inputStream);
     }
 
     public SoundContentXmlParser getSoundParser() {
-        if(soundParser == null) {
-            InputStream inputStream = getParserManager().getStreamByParserType(ParserType.SOUND_PARSER);
-            soundParser = new SoundContentXmlParser(inputStream);
-        }
-        return soundParser;
+//        if(soundParser == null) {
+//            InputStream inputStream = getParserManager().getStreamByParserType(ParserType.SOUND_PARSER);
+//            soundParser = new SoundContentXmlParser(inputStream);
+//        }
+//        return soundParser;
+        InputStream inputStream = getParserManager().getStreamByParserType(ParserType.SOUND_PARSER);
+        return new SoundContentXmlParser(inputStream);
     }
 
     public PhotoContentXmlParser getPhotoParser() {
-        if(photoParser == null) {
-            InputStream inputStream = getParserManager().getStreamByParserType(ParserType.PHOTO_PARSER);
-            photoParser = new PhotoContentXmlParser(inputStream);
-        }
-        return photoParser;
+//        if(photoParser == null) {
+//            InputStream inputStream = getParserManager().getStreamByParserType(ParserType.PHOTO_PARSER);
+//            photoParser = new PhotoContentXmlParser(inputStream);
+//        }
+//        return photoParser;
+        InputStream inputStream = getParserManager().getStreamByParserType(ParserType.PHOTO_PARSER);
+        return new PhotoContentXmlParser(inputStream);
     }
 }

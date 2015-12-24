@@ -65,7 +65,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
         pDialog = new ProgressDialog(this);
         pDialog.setTitle(videos.get(position).getTitle());
-        pDialog.setMessage("Buffering...");
+        pDialog.setMessage(getString(R.string.progress_dialog_video_text));
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(false);
         pDialog.show();

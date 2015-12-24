@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Медия галлерея</string>
+    <string name="action_receiver_download_manager"></string>
+    <string name="dialog_cancel_button">Отмена</string>
+    <string name="dialog_loading_filename_prefix_field"><![CDATA[Файл: ]]></string>
+    <string name="dialog_loading_ok_button"></string>
+    <string name="dialog_loading_pause_button">Пауза</string>
+    <string name="dialog_loading_progress_prefix_field"><![CDATA[Загружено: ]]></string>
+    <string name="dialog_loading_resume_button">Возобновить</string>
+    <string name="dialog_loading_title">Загружается</string>
+    <string name="dialog_media_removing_message">Вы действительно хотите удалить этот элемент?</string>
+    <string name="dialog_media_removing_remove_button">Удалить</string>
+    <string name="downloadable_menu_item_download_title">Скачать</string>
+    <string name="menu_item_music_title">Музыка</string>
+    <string name="menu_item_photo_title">Фото</string>
+    <string name="menu_item_video_title">Видео</string>
+    <string name="progress_dialog_purchase_header">Операция покупки</string>
+    <string name="progress_dialog_purchase_text">Выполняется покупка...</string>
+    <string name="progress_dialog_video_text">Обработка...</string>
+    <string name="toast_file_downloaded">Файл загружен</string>
+    <string name="toast_file_paused">Скачивание поставлено на паузу</string>
+    <string name="toast_file_stopped">Скачивание остановлено</string>
+    <string name="toast_locked_photo_info">Покупка разблокирует это фото</string>
+    <string name="toast_media_removed_message">Элемент был удален</string>
+    <string name="toast_purchase_offer">Купите приложение, чтобы открыть это фото</string>
+    <string name="toast_purchase_offer_sound">Купите приложение, чтобы открыть эту запись</string>
+    <string name="toast_purchase_offer_video">Купите приложение, чтобы открыть это видео</string>
+    <string name="toast_purchase_success">Покупка приложения прошла успешно!</string>
+    <string name="notification_downloaded">Загружено</string>
+    <string name="notification_downloading"><![CDATA[Загружается ]]></string>
+    <string name="measure"><![CDATA[ байт]]></string>
+    <string name="button_buy_app">Купить</string>
+    <string name="text_view_purchase_info">Имеется платный контент</string>
+</resources>

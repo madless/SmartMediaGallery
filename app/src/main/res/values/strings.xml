@@ -21,7 +21,21 @@
     <string name="toast_file_paused">Downloading paused</string>
     <string name="toast_file_stopped">Downloading stopped</string>
     <string name="downloadable_menu_item_download_title">Download</string>
-    <string name="dialog_loading_ok_button">Ok</string>
+    <string name="dialog_loading_ok_button" translatable="false">Ok</string>
 
-    <string name="action_receiver_download_manager">gfl.madless.smart_media_galery.download_manager_receiver</string>
+    <string name="action_receiver_download_manager" translatable="false">gfl.madless.smart_media_galery.download_manager_receiver</string>
+    <string name="progress_dialog_purchase_header">Purchase operation</string>
+    <string name="progress_dialog_purchase_text">Buying...</string>
+    <string name="toast_purchase_success">Congratulations! You bought application successfully!</string>
+    <string name="toast_purchase_offer">Buy full version to unlock this photo</string>
+    <string name="toast_purchase_offer_sound">Buy full version to unlock this sound</string>
+    <string name="toast_purchase_offer_video">Buy full version to unlock this video</string>
+    <string name="toast_locked_photo_info">Purchasing will unlock this photo</string>
+    <string name="progress_dialog_video_text">Buffering...</string>
+
+    <string name="notification_downloading">Downloading: </string>
+    <string name="notification_downloaded">Downloaded</string>
+    <string name="measure"> bytes</string>
+    <string name="button_buy_app">Buy application</string>
+    <string name="text_view_purchase_info">Buy to unlock content</string>
 </resources>
